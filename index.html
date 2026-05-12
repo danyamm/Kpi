@@ -3,362 +3,478 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KPI Call Center - Advanced Analytics 2026</title>
+    <title>Dashboard Avanzado</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-        body { font-family: 'Inter', sans-serif; }
-        .card { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-        .card:hover { transform: translateY(-8px); box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1); }
-        .glass { background: rgba(255, 255, 255, 0.97); backdrop-filter: blur(12px); }
-        th { cursor: pointer; }
-        .modal { animation: modalPop 0.3s ease; }
-        @keyframes modalPop { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+        
+        :root {
+            --primary: 59 130 246;
+        }
+        
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+        }
+        
+        .glass {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(12px);
+        }
+        
+        .dark .glass {
+            background: rgba(17, 24, 39, 0.95);
+        }
+        
+        .card-hover {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        }
+        
+        .sidebar-link {
+            transition: all 0.2s;
+        }
+        
+        .sidebar-link:hover {
+            background-color: rgb(243 244 246);
+        }
+        
+        .dark .sidebar-link:hover {
+            background-color: rgb(31 41 55);
+        }
     </style>
 </head>
-<body class="bg-gray-950 text-gray-100">
-
-<div class="flex h-screen overflow-hidden">
-    <!-- SIDEBAR -->
-    <div class="w-72 bg-gray-900 border-r border-gray-800 flex flex-col">
-        <div class="p-8 border-b border-gray-800">
-            <h1 class="text-3xl font-bold bg-gradient-to-r from-indigo-400 to-purple-500 bg-clip-text text-transparent">
-                <i class="fas fa-headset"></i> CALLKPI
-            </h1>
-            <p class="text-gray-500 text-sm mt-1">Advanced Analytics • 2026</p>
+<body class="bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100">
+    <div class="flex h-screen overflow-hidden">
+        <!-- Sidebar -->
+        <div class="w-72 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 flex flex-col">
+            <div class="p-6 border-b border-gray-200 dark:border-gray-800">
+                <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 bg-blue-600 rounded-2xl flex items-center justify-center text-white font-bold text-xl">D</div>
+                    <div>
+                        <h1 class="text-2xl font-bold tracking-tight">Dashboard</h1>
+                        <p class="text-xs text-gray-500 dark:text-gray-400">Avanzado • Tiempo Real</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="p-4">
+                <nav class="space-y-1">
+                    <a href="#" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-2xl bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400 font-medium">
+                        <i class="fa-solid fa-gauge-high"></i>
+                        <span>Panel Principal</span>
+                    </a>
+                    <a href="#" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-2xl text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">
+                        <i class="fa-solid fa-chart-line"></i>
+                        <span>Métricas</span>
+                    </a>
+                    <a href="#" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-2xl text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">
+                        <i class="fa-solid fa-users"></i>
+                        <span>Usuarios</span>
+                    </a>
+                    <a href="#" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-2xl text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">
+                        <i class="fa-solid fa-box"></i>
+                        <span>Inventario</span>
+                    </a>
+                    <a href="#" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-2xl text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">
+                        <i class="fa-solid fa-file-invoice-dollar"></i>
+                        <span>Finanzas</span>
+                    </a>
+                </nav>
+            </div>
+            
+            <div class="mt-auto p-4 border-t border-gray-200 dark:border-gray-800">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full"></div>
+                    <div class="text-sm">
+                        <div class="font-medium">Admin Usuario</div>
+                        <div class="text-xs text-gray-500">Online</div>
+                    </div>
+                </div>
+            </div>
         </div>
         
-        <nav class="flex-1 p-6 space-y-2">
-            <button onclick="showTab(0)" class="tab-btn w-full flex items-center gap-3 px-5 py-4 rounded-2xl bg-indigo-600 text-white font-medium">
-                <i class="fas fa-tachometer-alt"></i> Dashboard General
-            </button>
-            <button onclick="showTab(1)" class="tab-btn w-full flex items-center gap-3 px-5 py-4 rounded-2xl hover:bg-gray-800 text-gray-300 font-medium">
-                <i class="fas fa-users"></i> Ranking Asesores
-            </button>
-            <button onclick="showTab(2)" class="tab-btn w-full flex items-center gap-3 px-5 py-4 rounded-2xl hover:bg-gray-800 text-gray-300 font-medium">
-                <i class="fas fa-chart-line"></i> Análisis Temporal
-            </button>
-            <button onclick="showTab(3)" class="tab-btn w-full flex items-center gap-3 px-5 py-4 rounded-2xl hover:bg-gray-800 text-gray-300 font-medium">
-                <i class="fas fa-user-tie"></i> Perfil Individual
-            </button>
-        </nav>
-
-        <div class="p-6 border-t border-gray-800">
-            <button onclick="toggleDarkMode()" class="w-full py-3 bg-gray-800 hover:bg-gray-700 rounded-2xl flex items-center justify-center gap-2">
-                <i class="fas fa-moon"></i> Cambiar Tema
-            </button>
-        </div>
-    </div>
-
-    <!-- MAIN CONTENT -->
-    <div class="flex-1 overflow-auto">
-        <!-- HEADER -->
-        <header class="bg-gray-900 border-b border-gray-800 px-10 py-6 flex items-center justify-between sticky top-0 z-50">
-            <div class="flex items-center gap-4">
-                <h2 id="pageTitle" class="text-3xl font-semibold">Dashboard General</h2>
-                <span class="px-4 py-1.5 bg-emerald-500/10 text-emerald-400 text-sm rounded-3xl">Ene - Abr 2026</span>
-            </div>
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col overflow-hidden">
+            <!-- Top Bar -->
+            <header class="h-16 border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 px-8 flex items-center justify-between">
+                <div class="flex items-center gap-4">
+                    <button onclick="toggleDarkMode()" class="w-10 h-10 flex items-center justify-center rounded-2xl hover:bg-gray-100 dark:hover:bg-gray-800">
+                        <i id="theme-icon" class="fa-solid fa-moon"></i>
+                    </button>
+                    <div class="relative">
+                        <input type="text" id="searchInput" 
+                               class="bg-gray-100 dark:bg-gray-800 w-80 pl-10 py-3 rounded-3xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                               placeholder="Buscar en el dashboard...">
+                        <i class="fa-solid fa-magnifying-glass absolute left-4 top-3.5 text-gray-400"></i>
+                    </div>
+                </div>
+                
+                <div class="flex items-center gap-6">
+                    <div class="flex items-center gap-2 bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 text-xs px-3 py-1.5 rounded-3xl">
+                        <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                        EN VIVO
+                    </div>
+                    
+                    <button onclick="refreshDashboard()" 
+                            class="flex items-center gap-2 px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-3xl text-sm font-medium transition-colors">
+                        <i class="fa-solid fa-arrows-rotate"></i>
+                        <span>Actualizar</span>
+                    </button>
+                    
+                    <div class="w-9 h-9 bg-gray-200 dark:bg-gray-700 rounded-2xl flex items-center justify-center relative">
+                        <i class="fa-solid fa-bell"></i>
+                        <span class="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-[10px] flex items-center justify-center rounded-full">3</span>
+                    </div>
+                </div>
+            </header>
             
-            <div class="flex items-center gap-4">
-                <label class="cursor-pointer bg-white text-gray-900 px-6 py-3 rounded-2xl font-medium flex items-center gap-3 hover:bg-gray-100">
-                    <i class="fas fa-upload"></i>
-                    <span>Subir CSV / Excel</span>
-                    <input type="file" id="csvUpload" accept=".csv" class="hidden" onchange="handleFileUpload(event)">
-                </label>
-                <button onclick="exportAll()" class="px-6 py-3 border border-gray-700 hover:border-gray-500 rounded-2xl flex items-center gap-2">
-                    <i class="fas fa-download"></i> Exportar Todo
-                </button>
-            </div>
-        </header>
-
-        <div class="p-10">
-
-            <!-- TAB 0: GENERAL -->
-            <div id="tab0" class="tab">
-                <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6 mb-10">
-                    <!-- KPI Cards -->
-                    <div id="kpi1" class="card bg-gray-900 border border-gray-800 rounded-3xl p-6"></div>
-                    <div id="kpi2" class="card bg-gray-900 border border-gray-800 rounded-3xl p-6"></div>
-                    <div id="kpi3" class="card bg-gray-900 border border-gray-800 rounded-3xl p-6"></div>
-                    <div id="kpi4" class="card bg-gray-900 border border-gray-800 rounded-3xl p-6"></div>
-                    <div id="kpi5" class="card bg-gray-900 border border-gray-800 rounded-3xl p-6"></div>
-                    <div id="kpi6" class="card bg-gray-900 border border-gray-800 rounded-3xl p-6"></div>
+            <!-- Dashboard Content -->
+            <div class="flex-1 overflow-auto p-8 space-y-8">
+                <!-- KPI Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="glass rounded-3xl p-6 border border-gray-200 dark:border-gray-700 card-hover">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <p class="text-sm text-gray-500 dark:text-gray-400">Ingresos Totales</p>
+                                <p id="kpi-revenue" class="text-4xl font-semibold mt-2">$124,892</p>
+                            </div>
+                            <div class="w-11 h-11 bg-green-100 dark:bg-green-900/50 text-green-600 rounded-2xl flex items-center justify-center">
+                                <i class="fa-solid fa-dollar-sign text-2xl"></i>
+                            </div>
+                        </div>
+                        <div class="mt-6 flex items-center gap-2 text-sm">
+                            <span class="text-green-500 font-medium">↑ 18.2%</span>
+                            <span class="text-gray-400">vs mes anterior</span>
+                        </div>
+                    </div>
+                    
+                    <div class="glass rounded-3xl p-6 border border-gray-200 dark:border-gray-700 card-hover">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <p class="text-sm text-gray-500 dark:text-gray-400">Usuarios Activos</p>
+                                <p id="kpi-users" class="text-4xl font-semibold mt-2">3,284</p>
+                            </div>
+                            <div class="w-11 h-11 bg-blue-100 dark:bg-blue-900/50 text-blue-600 rounded-2xl flex items-center justify-center">
+                                <i class="fa-solid fa-users text-2xl"></i>
+                            </div>
+                        </div>
+                        <div class="mt-6 flex items-center gap-2 text-sm">
+                            <span class="text-green-500 font-medium">↑ 4.1%</span>
+                            <span class="text-gray-400">esta semana</span>
+                        </div>
+                    </div>
+                    
+                    <div class="glass rounded-3xl p-6 border border-gray-200 dark:border-gray-700 card-hover">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <p class="text-sm text-gray-500 dark:text-gray-400">Órdenes</p>
+                                <p id="kpi-orders" class="text-4xl font-semibold mt-2">1,429</p>
+                            </div>
+                            <div class="w-11 h-11 bg-purple-100 dark:bg-purple-900/50 text-purple-600 rounded-2xl flex items-center justify-center">
+                                <i class="fa-solid fa-cart-shopping text-2xl"></i>
+                            </div>
+                        </div>
+                        <div class="mt-6 flex items-center gap-2 text-sm">
+                            <span class="text-red-500 font-medium">↓ 2.3%</span>
+                            <span class="text-gray-400">vs ayer</span>
+                        </div>
+                    </div>
+                    
+                    <div class="glass rounded-3xl p-6 border border-gray-200 dark:border-gray-700 card-hover">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <p class="text-sm text-gray-500 dark:text-gray-400">Tasa de Conversión</p>
+                                <p id="kpi-conversion" class="text-4xl font-semibold mt-2">3.84%</p>
+                            </div>
+                            <div class="w-11 h-11 bg-amber-100 dark:bg-amber-900/50 text-amber-600 rounded-2xl flex items-center justify-center">
+                                <i class="fa-solid fa-chart-pie text-2xl"></i>
+                            </div>
+                        </div>
+                        <div class="mt-6 flex items-center gap-2 text-sm">
+                            <span class="text-green-500 font-medium">↑ 0.6%</span>
+                            <span class="text-gray-400">esta hora</span>
+                        </div>
+                    </div>
                 </div>
-
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                    <div class="bg-gray-900 border border-gray-800 rounded-3xl p-8">
-                        <h3 class="text-lg font-semibold mb-6">Evolución Mensual</h3>
-                        <canvas id="monthlyChart" height="110"></canvas>
+                
+                <!-- Charts -->
+                <div class="grid grid-cols-1 lg:grid-cols-7 gap-6">
+                    <!-- Revenue Chart -->
+                    <div class="lg:col-span-4 glass rounded-3xl p-6 border border-gray-200 dark:border-gray-700">
+                        <div class="flex items-center justify-between mb-6">
+                            <h2 class="font-semibold text-lg">Ingresos por Día (Últimos 30 días)</h2>
+                            <select id="timeRange" onchange="updateCharts()" 
+                                    class="bg-transparent border border-gray-300 dark:border-gray-600 rounded-2xl px-4 py-2 text-sm">
+                                <option value="30">30 días</option>
+                                <option value="7">7 días</option>
+                                <option value="90">90 días</option>
+                            </select>
+                        </div>
+                        <canvas id="revenueChart" height="110"></canvas>
                     </div>
-                    <div class="bg-gray-900 border border-gray-800 rounded-3xl p-8">
-                        <h3 class="text-lg font-semibold mb-6">Distribución CSAT</h3>
-                        <canvas id="distributionChart"></canvas>
-                    </div>
-                </div>
-            </div>
-
-            <!-- TAB 1: RANKING -->
-            <div id="tab1" class="tab hidden">
-                <div class="bg-gray-900 border border-gray-800 rounded-3xl overflow-hidden">
-                    <div class="p-6 border-b border-gray-800 flex justify-between items-center">
-                        <input id="search" type="text" placeholder="Buscar asesor..." 
-                               class="bg-gray-800 border border-gray-700 rounded-2xl px-5 py-3 w-80 focus:outline-none focus:border-indigo-500"
-                               onkeyup="filterTable()">
-                        <button onclick="sortTable()" class="text-sm flex items-center gap-2 text-gray-400 hover:text-white">
-                            <i class="fas fa-sort"></i> Ordenar por Score
-                        </button>
-                    </div>
-                    <table id="rankingTable" class="w-full"></table>
-                </div>
-            </div>
-
-            <!-- TAB 2: ANÁLISIS TEMPORAL -->
-            <div id="tab2" class="tab hidden">
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                    <div class="lg:col-span-2 bg-gray-900 border border-gray-800 rounded-3xl p-8">
-                        <h3 class="font-semibold mb-6">Tendencias por KPI</h3>
-                        <canvas id="trendMultiChart" height="140"></canvas>
-                    </div>
-                    <div class="bg-gray-900 border border-gray-800 rounded-3xl p-8">
-                        <h3 class="font-semibold mb-6">Mejores Mejoras</h3>
-                        <div id="improvements"></div>
+                    
+                    <!-- Pie Chart -->
+                    <div class="lg:col-span-3 glass rounded-3xl p-6 border border-gray-200 dark:border-gray-700">
+                        <h2 class="font-semibold text-lg mb-6">Distribución por Categoría</h2>
+                        <canvas id="categoryChart" height="220"></canvas>
                     </div>
                 </div>
-            </div>
-
-            <!-- TAB 3: PERFIL INDIVIDUAL -->
-            <div id="tab3" class="tab hidden">
-                <div class="flex gap-6">
-                    <div class="w-80 bg-gray-900 border border-gray-800 rounded-3xl p-8" id="advisorProfile">
-                        <!-- JS populated -->
+                
+                <!-- Table + Secondary Chart -->
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                    <!-- Recent Activity Table -->
+                    <div class="lg:col-span-7 glass rounded-3xl p-6 border border-gray-200 dark:border-gray-700">
+                        <h2 class="font-semibold text-lg mb-6">Actividad Reciente</h2>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-sm">
+                                <thead>
+                                    <tr class="border-b border-gray-200 dark:border-gray-700">
+                                        <th class="text-left py-4 font-medium text-gray-500">ID</th>
+                                        <th class="text-left py-4 font-medium text-gray-500">Cliente</th>
+                                        <th class="text-left py-4 font-medium text-gray-500">Producto</th>
+                                        <th class="text-left py-4 font-medium text-gray-500">Monto</th>
+                                        <th class="text-left py-4 font-medium text-gray-500">Estado</th>
+                                        <th class="text-left py-4 font-medium text-gray-500">Fecha</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="activityTable" class="text-gray-700 dark:text-gray-300">
+                                    <!-- Llenado por JS -->
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                    <div class="flex-1 bg-gray-900 border border-gray-800 rounded-3xl p-8">
-                        <canvas id="advisorRadar" height="180"></canvas>
+                    
+                    <!-- Traffic Sources -->
+                    <div class="lg:col-span-5 glass rounded-3xl p-6 border border-gray-200 dark:border-gray-700">
+                        <h2 class="font-semibold text-lg mb-6">Fuentes de Tráfico</h2>
+                        <canvas id="trafficChart" height="240"></canvas>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
-<!-- MODAL -->
-<div id="modal" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center z-50">
-    <div class="bg-gray-900 rounded-3xl max-w-2xl w-full mx-4 modal p-8">
-        <h3 class="text-2xl font-bold mb-6" id="modalName"></h3>
-        <div id="modalContent" class="grid grid-cols-2 gap-6"></div>
-        <button onclick="closeModal()" class="mt-8 w-full py-4 bg-gray-800 hover:bg-gray-700 rounded-2xl">Cerrar</button>
-    </div>
-</div>
-
-<script>
-// ==================== DATOS BASE (se sobrescriben con CSV) ====================
-let advisors = [
-    {name:"Laura Martínez", calls:12450, csat:96.2, fcr:93.1, adherence:98.4, quality:95, avgTime:245, resolution:94},
-    {name:"Carlos Rivera", calls:10890, csat:91.8, fcr:87.4, adherence:94.2, quality:89, avgTime:312, resolution:88},
-    {name:"Ana López", calls:13780, csat:97.1, fcr:94.8, adherence:97.9, quality:96, avgTime:198, resolution:95},
-    // ... (15 asesores generados)
-];
-
-let monthlyData = {
-    calls: [28900, 31450, 30120, 34800],
-    csat: [91.8, 92.4, 93.1, 94.2],
-    fcr: [86.5, 87.1, 88.4, 87.9]
-};
-
-// Variables globales
-let currentAdvisor = null;
-let allCharts = {};
-
-// ==================== FUNCIONES PRINCIPALES ====================
-function calculateKPIs() {
-    const totalCalls = advisors.reduce((a, b) => a + b.calls, 0);
-    const avgCSAT = (advisors.reduce((a, b) => a + b.csat, 0) / advisors.length).toFixed(1);
-    const avgFCR = (advisors.reduce((a, b) => a + b.fcr, 0) / advisors.length).toFixed(1);
-    const avgAdh = (advisors.reduce((a, b) => a + b.adherence, 0) / advisors.length).toFixed(1);
-    const topPerformer = advisors.reduce((a, b) => a.csat > b.csat ? a : b);
-
-    // Render KPI Cards
-    document.getElementById('kpi1').innerHTML = `<p class="text-gray-400 text-sm">Total Llamadas</p><p class="text-5xl font-bold mt-2">${totalCalls.toLocaleString()}</p>`;
-    document.getElementById('kpi2').innerHTML = `<p class="text-gray-400 text-sm">CSAT Promedio</p><p class="text-5xl font-bold mt-2 text-emerald-400">${avgCSAT}</p>`;
-    document.getElementById('kpi3').innerHTML = `<p class="text-gray-400 text-sm">FCR Promedio</p><p class="text-5xl font-bold mt-2">${avgFCR}%</p>`;
-    document.getElementById('kpi4').innerHTML = `<p class="text-gray-400 text-sm">Adherencia</p><p class="text-5xl font-bold mt-2">${avgAdh}%</p>`;
-    document.getElementById('kpi5').innerHTML = `<p class="text-gray-400 text-sm">Mejor Asesor</p><p class="text-xl font-semibold mt-2">${topPerformer.name}</p>`;
-}
-
-function renderRankingTable(filteredAdvisors) {
-    let html = `
-        <thead>
-            <tr class="bg-gray-800 text-gray-400 text-xs uppercase">
-                <th class="text-left p-5">Asesor</th>
-                <th class="text-center p-5">Llamadas</th>
-                <th class="text-center p-5">CSAT</th>
-                <th class="text-center p-5">FCR</th>
-                <th class="text-center p-5">Adherencia</th>
-                <th class="text-center p-5">Score Total</th>
-                <th class="w-12"></th>
-            </tr>
-        </thead>
-        <tbody class="divide-y divide-gray-800">`;
-
-    filteredAdvisors.forEach((advisor, index) => {
-        const score = (advisor.csat * 0.4 + advisor.fcr * 0.3 + advisor.adherence * 0.3).toFixed(1);
-        html += `
-            <tr class="hover:bg-gray-800/50 cursor-pointer" onclick="openAdvisorModal(${index})">
-                <td class="p-5 font-medium">${advisor.name}</td>
-                <td class="text-center p-5">${advisor.calls.toLocaleString()}</td>
-                <td class="text-center p-5 font-semibold text-emerald-400">${advisor.csat}</td>
-                <td class="text-center p-5">${advisor.fcr}</td>
-                <td class="text-center p-5">${advisor.adherence}</td>
-                <td class="text-center p-5 font-bold">${score}</td>
-                <td><i class="fas fa-chevron-right text-gray-600"></i></td>
-            </tr>`;
-    });
-    html += `</tbody>`;
-    document.getElementById('rankingTable').innerHTML = html;
-}
-
-function createAllCharts() {
-    // Monthly Evolution
-    new Chart(document.getElementById('monthlyChart'), {
-        type: 'bar',
-        data: { labels: ['Ene','Feb','Mar','Abr'], datasets: [{ label: 'Llamadas', data: monthlyData.calls, backgroundColor: '#6366f1' }] },
-        options: { responsive: true, plugins: { legend: { display: false }}}
-    });
-
-    // Distribution
-    new Chart(document.getElementById('distributionChart'), {
-        type: 'doughnut',
-        data: {
-            labels: ['90-100', '85-89', '80-84', '<80'],
-            datasets: [{ data: [8, 5, 2, 0], backgroundColor: ['#10b981', '#3b82f6', '#eab308', '#ef4444'] }]
-        }
-    });
-
-    // Multi Trend
-    new Chart(document.getElementById('trendMultiChart'), {
-        type: 'line',
-        data: {
-            labels: ['Ene','Feb','Mar','Abr'],
-            datasets: [
-                { label: 'CSAT', data: monthlyData.csat, borderColor: '#10b981', tension: 0.4 },
-                { label: 'FCR', data: monthlyData.fcr, borderColor: '#6366f1', tension: 0.4 }
-            ]
-        }
-    });
-}
-
-function openAdvisorModal(index) {
-    currentAdvisor = advisors[index];
-    document.getElementById('modalName').textContent = currentAdvisor.name;
-    
-    const content = document.getElementById('modalContent');
-    content.innerHTML = `
-        <div>
-            <p class="text-gray-400">Llamadas Atendidas</p>
-            <p class="text-4xl font-bold">${currentAdvisor.calls.toLocaleString()}</p>
-        </div>
-        <div>
-            <p class="text-gray-400">Tiempo Promedio</p>
-            <p class="text-4xl font-bold">${currentAdvisor.avgTime}s</p>
-        </div>
-        <div class="col-span-2 mt-4">
-            <canvas id="modalRadar" height="140"></canvas>
-        </div>
-    `;
-    document.getElementById('modal').classList.remove('hidden');
-
-    // Radar chart in modal
-    setTimeout(() => {
-        new Chart(document.getElementById('modalRadar'), {
-            type: 'radar',
-            data: {
-                labels: ['CSAT', 'FCR', 'Adherencia', 'Calidad', 'Resolución'],
-                datasets: [{
-                    data: [currentAdvisor.csat, currentAdvisor.fcr, currentAdvisor.adherence, currentAdvisor.quality, currentAdvisor.resolution],
-                    backgroundColor: 'rgba(99, 102, 241, 0.2)',
-                    borderColor: '#6366f1',
-                    borderWidth: 3
-                }]
-            },
-            options: { scales: { r: { min: 70, max: 100 }}}
-        });
-    }, 100);
-}
-
-function closeModal() {
-    document.getElementById('modal').classList.add('hidden');
-}
-
-// ==================== CSV UPLOAD ====================
-function handleFileUpload(e) {
-    const file = e.target.files[0];
-    Papa.parse(file, {
-        header: true,
-        skipEmptyLines: true,
-        complete: function(results) {
-            advisors = results.data.map(row => ({
-                name: row.Nombre || row.name,
-                calls: parseFloat(row.Llamadas || row.calls),
-                csat: parseFloat(row.CSAT || row.csat),
-                fcr: parseFloat(row.FCR || row.fcr),
-                adherence: parseFloat(row.Adherencia || row.adherence),
-                quality: parseFloat(row.Calidad || row.quality || 90),
-                avgTime: parseFloat(row.Tiempo || 250),
-                resolution: parseFloat(row.Resolucion || 90)
-            })).filter(a => a.name);
+    <script>
+        // Datos de ejemplo (reemplaza con tus datos reales)
+        let dashboardData = {
+            revenue: 124892,
+            users: 3284,
+            orders: 1429,
+            conversion: 3.84,
             
-            calculateKPIs();
-            renderRankingTable(advisors);
-            alert(`✅ ${advisors.length} asesores cargados exitosamente!`);
+            revenueHistory: [82000, 91000, 78000, 105000, 98000, 112000, 124000, 119000, 135000, 128000, 142000, 138000],
+            labels: ['1 Mar', '5 Mar', '10 Mar', '15 Mar', '20 Mar', '25 Mar', '30 Mar', '4 Abr', '9 Abr', '14 Abr', '19 Abr', '24 Abr'],
+            
+            categories: ['Electrónicos', 'Ropa', 'Hogar', 'Deportes', 'Otros'],
+            categoryValues: [42, 28, 15, 10, 5],
+            
+            traffic: [45, 32, 12, 8, 3],
+            trafficLabels: ['Orgánico', 'Directo', 'Redes Sociales', 'Email', 'Referidos']
+        };
+        
+        let revenueChart, categoryChart, trafficChart;
+        
+        function formatCurrency(value) {
+            return new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'USD' }).format(value);
         }
-    });
-}
-
-function filterTable() {
-    const term = document.getElementById('search').value.toLowerCase();
-    const filtered = advisors.filter(a => a.name.toLowerCase().includes(term));
-    renderRankingTable(filtered);
-}
-
-function exportAll() {
-    let csv = "Nombre,Llamadas,CSAT,FCR,Adherencia,Calidad\n";
-    advisors.forEach(a => {
-        csv += `"\( {a.name}", \){a.calls},\( {a.csat}, \){a.fcr},\( {a.adherence}, \){a.quality}\n`;
-    });
-    const blob = new Blob([csv], {type: 'text/csv'});
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = 'KPI_CallCenter_Completo_2026.csv';
-    link.click();
-}
-
-// Tab navigation
-function showTab(n) {
-    document.querySelectorAll('.tab').forEach(tab => tab.classList.add('hidden'));
-    document.getElementById(`tab${n}`).classList.remove('hidden');
-    
-    document.querySelectorAll('.tab-btn').forEach((btn, i) => {
-        if (i === n) btn.classList.add('bg-indigo-600', 'text-white');
-        else btn.classList.remove('bg-indigo-600', 'text-white');
-    });
-
-    document.getElementById('pageTitle').textContent = 
-        n === 0 ? "Dashboard General" :
-        n === 1 ? "Ranking de Asesores" :
-        n === 2 ? "Análisis Temporal" : "Perfil de Asesor";
-}
-
-// Init
-window.onload = () => {
-    calculateKPIs();
-    renderRankingTable(advisors);
-    createAllCharts();
-    showTab(0);
-};
-</script>
+        
+        function initKPI() {
+            document.getElementById('kpi-revenue').textContent = formatCurrency(dashboardData.revenue);
+            document.getElementById('kpi-users').textContent = dashboardData.users.toLocaleString('es-ES');
+            document.getElementById('kpi-orders').textContent = dashboardData.orders.toLocaleString('es-ES');
+            document.getElementById('kpi-conversion').textContent = dashboardData.conversion + '%';
+        }
+        
+        function createRevenueChart() {
+            const ctx = document.getElementById('revenueChart');
+            if (revenueChart) revenueChart.destroy();
+            
+            revenueChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: dashboardData.labels,
+                    datasets: [{
+                        label: 'Ingresos',
+                        data: dashboardData.revenueHistory,
+                        borderColor: 'rgb(59 130 246)',
+                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                        tension: 0.4,
+                        borderWidth: 3,
+                        pointRadius: 0,
+                        pointHoverRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: '#1f2937',
+                            titleColor: '#e5e7eb',
+                            bodyColor: '#e5e7eb',
+                            displayColors: false,
+                            callbacks: {
+                                label: (ctx) => formatCurrency(ctx.raw)
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            grid: { color: 'rgba(0,0,0,0.05)' },
+                            ticks: { callback: (v) => '$' + (v/1000) + 'k' }
+                        },
+                        x: {
+                            grid: { color: 'rgba(0,0,0,0.05)' }
+                        }
+                    }
+                }
+            });
+        }
+        
+        function createCategoryChart() {
+            const ctx = document.getElementById('categoryChart');
+            if (categoryChart) categoryChart.destroy();
+            
+            categoryChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: dashboardData.categories,
+                    datasets: [{
+                        data: dashboardData.categoryValues,
+                        backgroundColor: [
+                            '#3b82f6', '#8b5cf6', '#ec4899', '#f59e0b', '#10b981'
+                        ],
+                        borderWidth: 5,
+                        borderColor: '#ffffff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    cutout: '75%',
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: { usePointStyle: true, padding: 20 }
+                        }
+                    }
+                }
+            });
+        }
+        
+        function createTrafficChart() {
+            const ctx = document.getElementById('trafficChart');
+            if (trafficChart) trafficChart.destroy();
+            
+            trafficChart = new Chart(ctx, {
+                type: 'bar',
+                data: {labels: dashboardData.trafficLabels,
+                    datasets: [{
+                        label: 'Porcentaje',
+                        data: dashboardData.traffic,
+                        backgroundColor: 'rgba(59, 130, 246, 0.8)',
+                        borderRadius: 8,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    indexAxis: 'y',
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        x: { max: 100 }
+                    }
+                }
+            });
+        }
+        
+        function populateTable() {
+            const tbody = document.getElementById('activityTable');
+            tbody.innerHTML = '';
+            
+            const sampleData = [
+                {id: "#3921", client: "Laura Martínez", product: "iPhone 15 Pro", amount: 1299, status: "Completado", date: "12 May 2026"},
+                {id: "#3920", client: "Carlos Rivera", product: "MacBook Air M3", amount: 1499, status: "Pendiente", date: "12 May 2026"},
+                {id: "#3919", client: "Ana López", product: "Sony WH-1000XM5", amount: 398, status: "Completado", date: "11 May 2026"},
+                {id: "#3918", client: "Miguel Torres", product: "Samsung Galaxy Watch", amount: 299, status: "Completado", date: "11 May 2026"},
+            ];
+            
+            sampleData.forEach(item => {
+                const row = document.createElement('tr');
+                row.className = "border-b border-gray-100 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors";
+                row.innerHTML = `
+                    <td class="py-4 font-medium">${item.id}</td>
+                    <td class="py-4">${item.client}</td>
+                    <td class="py-4">${item.product}</td>
+                    <td class="py-4 font-medium">${formatCurrency(item.amount)}</td>
+                    <td class="py-4">
+                        <span class="inline-block px-3 py-1 text-xs rounded-3xl ${item.status === 'Completado' ? 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300' : 'bg-amber-100 text-amber-700 dark:bg-amber-900 dark:text-amber-300'}">
+                            ${item.status}
+                        </span>
+                    </td>
+                    <td class="py-4 text-gray-500">${item.date}</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+        
+        function updateCharts() {
+            // Aquí puedes cambiar los datos según el filtro
+            createRevenueChart();
+        }
+        
+        function toggleDarkMode() {
+            document.documentElement.classList.toggle('dark');
+            const icon = document.getElementById('theme-icon');
+            if (document.documentElement.classList.contains('dark')) {
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+            } else {
+                icon.classList.add('fa-moon');
+                icon.classList.remove('fa-sun');
+            }
+        }
+        
+        function refreshDashboard() {
+            const btns = document.querySelectorAll('button');
+            btns.forEach(b => {
+                if (b.textContent.includes('Actualizar')) {
+                    b.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i>`;
+                    setTimeout(() => {
+                        b.innerHTML = `<i class="fa-solid fa-arrows-rotate"></i><span>Actualizar</span>`;
+                        alert("✅ Dashboard actualizado en tiempo real");
+                    }, 1200);
+                }
+            });
+        }
+        
+        // Inicialización
+        window.onload = function() {
+            initKPI();
+            createRevenueChart();
+            createCategoryChart();
+            createTrafficChart();
+            populateTable();
+            
+            // Búsqueda interactiva (demo)
+            document.getElementById('searchInput').addEventListener('input', (e) => {
+                if (e.target.value.length > 3) {
+                    console.log("Buscando:", e.target.value);
+                }
+            });
+            
+            // Soporte para modo oscuro según preferencia del sistema
+            if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.classList.add('dark');
+                document.getElementById('theme-icon').classList.remove('fa-moon');
+                document.getElementById('theme-icon').classList.add('fa-sun');
+            }
+        };
+    </script>
 </body>
 </html>
