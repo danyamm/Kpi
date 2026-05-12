@@ -1,518 +1,81 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Dashboard Ejecutivo | Performance de Asesores</title>
-    <!-- Google Fonts & Chart.js CDN -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-    <!-- Font Awesome 6 (free icons) -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background: #f0f2f8;
-            color: #1A2C3E;
-            padding: 24px 20px;
-        }
-
-        /* Dashboard container */
-        .dashboard-container {
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        /* Header area */
-        .dashboard-header {
-            margin-bottom: 28px;
-        }
-
-        .dashboard-header h1 {
-            font-size: 1.8rem;
-            font-weight: 600;
-            background: linear-gradient(135deg, #1E3C72, #2A5298);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            letter-spacing: -0.3px;
-        }
-
-        .dashboard-header p {
-            color: #4a627a;
-            font-weight: 500;
-            margin-top: 6px;
-            font-size: 0.9rem;
-        }
-
-        /* Selector moderno */
-        .agent-selector {
-            background: white;
-            border-radius: 28px;
-            padding: 6px 8px 6px 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 12px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.02), 0 2px 6px rgba(0,0,0,0.05);
-            margin-bottom: 28px;
-            backdrop-filter: blur(2px);
-            border: 1px solid rgba(0,0,0,0.05);
-        }
-
-        .select-label {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-weight: 600;
-            color: #1e466e;
-        }
-
-        .select-label i {
-            font-size: 1.3rem;
-            color: #2a6f97;
-        }
-
-        select {
-            background: #f8fafd;
-            border: 1px solid #cad2db;
-            border-radius: 40px;
-            padding: 10px 20px;
-            font-family: 'Inter', monospace;
-            font-weight: 500;
-            font-size: 0.9rem;
-            width: 260px;
-            cursor: pointer;
-            outline: none;
-            transition: all 0.2s;
-        }
-
-        select:focus {
-            border-color: #2a6f97;
-            box-shadow: 0 0 0 2px rgba(42,111,151,0.2);
-        }
-
-        /* Tarjetas KPI principales */
-        .kpi-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 18px;
-            margin-bottom: 32px;
-        }
-
-        .kpi-card {
-            background: white;
-            border-radius: 28px;
-            padding: 18px 16px;
-            box-shadow: 0 5px 12px rgba(0,0,0,0.03), 0 1px 2px rgba(0,0,0,0.05);
-            transition: transform 0.1s ease, box-shadow 0.2s;
-            border: 1px solid #eef2f8;
-        }
-
-        .kpi-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 15px 25px -12px rgba(0,0,0,0.1);
-        }
-
-        .kpi-title {
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-weight: 600;
-            color: #5c6f87;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .kpi-value {
-            font-size: 2rem;
-            font-weight: 700;
-            color: #1f3b4c;
-            line-height: 1.2;
-        }
-
-        .kpi-sub {
-            font-size: 0.7rem;
-            color: #6c86a3;
-            margin-top: 6px;
-            font-weight: 500;
-        }
-
-        .goal-badge {
-            background: #eef2ff;
-            border-radius: 40px;
-            padding: 2px 10px;
-            font-size: 0.7rem;
-            font-weight: 600;
-            color: #2c6e9e;
-            display: inline-block;
-        }
-
-        /* dos columnas: gráficos y tablas secundarias */
-        .insight-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 24px;
-            margin-bottom: 32px;
-        }
-
-        .chart-card {
-            flex: 1.2;
-            background: white;
-            border-radius: 28px;
-            padding: 20px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
-            border: 1px solid #eef2f8;
-        }
-
-        .metrics-card {
-            flex: 0.9;
-            background: white;
-            border-radius: 28px;
-            padding: 20px;
-            border: 1px solid #eef2f8;
-        }
-
-        .card-title {
-            font-weight: 700;
-            font-size: 1.1rem;
-            margin-bottom: 18px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            border-left: 4px solid #2a6f97;
-            padding-left: 14px;
-        }
-
-        /* detalles barra de progreso */
-        .progress-item {
-            margin-bottom: 20px;
-        }
-
-        .progress-header {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.8rem;
-            font-weight: 500;
-            margin-bottom: 6px;
-        }
-
-        .progress-bar-bg {
-            background: #e2e8f0;
-            border-radius: 20px;
-            height: 8px;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            background: #2a6f97;
-            width: 0%;
-            height: 100%;
-            border-radius: 20px;
-        }
-
-        .badge-warning {
-            background: #fef3c7;
-            color: #b45309;
-        }
-
-        .badge-success {
-            background: #e0f2fe;
-            color: #0c6b58;
-        }
-
-        table.mini-table {
-            width: 100%;
-            font-size: 0.8rem;
-            border-collapse: collapse;
-        }
-
-        table.mini-table td {
-            padding: 8px 0;
-            border-bottom: 1px solid #edf2f7;
-        }
-
-        table.mini-table td:last-child {
-            text-align: right;
-            font-weight: 600;
-        }
-
-        .status-badge {
-            font-weight: 600;
-            font-size: 0.7rem;
-            background: #e6f7ec;
-            color: #1e7b48;
-            border-radius: 30px;
-            padding: 2px 8px;
-        }
-
-        .nps-positive {
-            color: #15803d;
-            font-weight: 700;
-        }
-
-        .nps-neutral {
-            color: #b45309;
-        }
-
-        .nps-negative {
-            color: #b91c1c;
-        }
-
-        footer {
-            text-align: center;
-            margin-top: 40px;
-            font-size: 0.7rem;
-            color: #6c86a3;
-        }
-
-        @media (max-width: 720px) {
-            .kpi-value {
-                font-size: 1.6rem;
-            }
-            .agent-selector {
-                flex-direction: column;
-                align-items: stretch;
-            }
-            select {
-                width: 100%;
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>Minijuego Planta</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #1a1a2e;
+      font-family: sans-serif;
+    }
+    #game {
+      background: #16213e;
+      border: 3px solid #0f3460;
+      border-radius: 12px;
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
-<div class="dashboard-container">
-    <div class="dashboard-header">
-        <h1><i class="fas fa-chart-line" style="margin-right: 10px;"></i>Command Center · Asesores Expertos</h1>
-        <p>Métricas integradas: Adherencia, AHT, Calidad, NPS y satisfacción | Comparativa vs objetivos</p>
-    </div>
+  <canvas id="game" width="500" height="400"></canvas>
+  <script>
+    const canvas = document.getElementById('game');
+    const ctx = canvas.getContext('2d');
 
-    <div class="agent-selector">
-        <div class="select-label">
-            <i class="fas fa-user-tie"></i>
-            <span>Seleccionar Asesor</span>
-        </div>
-        <select id="agentSelect"></select>
-        <div><i class="fas fa-chart-simple" style="color:#2a6f97;"></i> <span style="font-size: 13px;">Dashboard en tiempo real</span></div>
-    </div>
+    let plantHeight = 20;
+    let watering = false;
 
-    <!-- KPIs principales -->
-    <div class="kpi-grid" id="kpiContainer"></div>
-
-    <!-- Gráficos y detalles -->
-    <div class="insight-row">
-        <div class="chart-card">
-            <div class="card-title"><i class="fas fa-chart-pie"></i> Distribución Cliente: Promotores / Neutrales / Detractores</div>
-            <canvas id="npsDonutChart" width="400" height="200" style="max-height: 220px; width:100%"></canvas>
-            <div style="margin-top: 12px; text-align:center;" id="npsScoreDisplay"></div>
-        </div>
-        <div class="metrics-card">
-            <div class="card-title"><i class="fas fa-bullseye"></i> Cumplimiento de Objetivos</div>
-            <div class="progress-item">
-                <div class="progress-header"><span>Adherencia (>=95%)</span><span id="adhPercentLabel">0%</span></div>
-                <div class="progress-bar-bg"><div class="progress-fill" id="adhFill" style="width:0%"></div></div>
-            </div>
-            <div class="progress-item">
-                <div class="progress-header"><span>AHT vs Goal (08:45)</span><span id="ahtStatusLabel">--</span></div>
-                <div class="progress-bar-bg"><div class="progress-fill" id="ahtFill" style="width:0%; background:#dd9040;"></div></div>
-            </div>
-            <div class="progress-item">
-                <div class="progress-header"><span>% Error (% Mal) < 8%</span><span id="malLabel">0%</span></div>
-                <div class="progress-bar-bg"><div class="progress-fill" id="malFill" style="background:#b35353;"></div></div>
-            </div>
-            <div class="progress-item">
-                <div class="progress-header"><span>% TCI < 7%</span><span id="tciLabel">0%</span></div>
-                <div class="progress-bar-bg"><div class="progress-fill" id="tciFill" style="background:#ce8d42;"></div></div>
-            </div>
-            <div class="progress-item">
-                <div class="progress-header"><span>% Envío (Meta 30%)</span><span id="envioLabel">0%</span></div>
-                <div class="progress-bar-bg"><div class="progress-fill" id="envioFill" style="background:#469b6e;"></div></div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Tabla de métricas adicionales / scores -->
-    <div style="background: white; border-radius: 28px; padding: 20px; margin-top: 8px; border:1px solid #eef2f8;">
-        <div class="card-title"><i class="fas fa-star-of-life"></i> Indicadores de Calidad & Satisfacción (detalle por asesor)</div>
-        <div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: space-between;">
-            <div style="flex:1">
-                <table class="mini-table">
-                    <tr><td><i class="fas fa-chart-simple"></i> Score Calidad 1</td><td id="score1Val">--</td></tr>
-                    <tr><td><i class="fas fa-chart-simple"></i> Score Calidad 2</td><td id="score2Val">--</td></tr>
-                    <tr><td><i class="fas fa-chart-simple"></i> Score Calidad 3</td><td id="score3Val">--</td></tr>
-                    <tr><td><i class="fas fa-clock"></i> AHT (Tiempo promedio)</td><td id="ahtDetail">--</td></tr>
-                </table>
-            </div>
-            <div style="flex:1">
-                <table class="mini-table">
-                    <tr><td><i class="fas fa-user-check"></i> Total Promotores</td><td id="promotersCount">--</td></tr>
-                    <tr><td><i class="fas fa-user-minus"></i> Total Detractores</td><td id="detractorsCount">--</td></tr>
-                    <tr><td><i class="fas fa-user"></i> Neutrales</td><td id="neutralCount">--</td></tr>
-                    <tr><td><i class="fas fa-chart-line"></i> NPS (Net Promoter Score)</td><td id="npsCalculated">--</td></tr>
-                </table>
-            </div>
-        </div>
-    </div>
-    <footer>Datos integrados de adherencia, eficiencia, calidad y encuestas · Dashboard dinámico</footer>
-</div>
-
-<script>
-    // ======================== DATOS INTEGRADOS DE LAS TRES FUENTES ========================
-    // Combinación de primera imagen (operacional) y tercera imagen (detractores/promotores + 3 scores)
-    // se incluye empleado adicional 1076025 con datos parciales (solo encuestas)
-    const employeesData = [
-        { id: "1069594", name: "PACHECO ZAVALETA ERICA FIORELLA", status: "Activo", nivel: "Experto", adherencia: 76.21, ahtRaw: "08:57", pctMal: 100.00, pctTCI: 16.67, pctEnvio: 28.02, detractores: 9, neutros: 0, promotores: 55, score1: 85.94, score2: 92.19, score3: 91.67 },
-        { id: "1072818", name: "CARDENAS MAMANI DANILO ANTHONY", status: "Activo", nivel: "Experto", adherencia: 100.23, ahtRaw: "08:12", pctMal: 0, pctTCI: 0.00, pctEnvio: 27.00, detractores: 33, neutros: 0, promotores: 31, score1: 48.44, score2: 51.52, score3: 41.94 },
-        { id: "1072816", name: "RAMIREZ ZEGARRA LUIS ALBERTO", status: "Activo", nivel: "Experto", adherencia: 99.02, ahtRaw: "07:01", pctMal: 0, pctTCI: 0.00, pctEnvio: 22.22, detractores: 9, neutros: 3, promotores: 54, score1: 81.82, score2: 89.39, score3: 90.16 },
-        { id: "1076036", name: "BAUTISTA GUERRA BRIAM ANTHONY", status: "Activo", nivel: "Experto", adherencia: 97.26, ahtRaw: "06:11", pctMal: 75.00, pctTCI: 16.67, pctEnvio: 12.08, detractores: 8, neutros: 1, promotores: 37, score1: 80.43, score2: 84.78, score3: 80.43 },
-        { id: "1076034", name: "GARCIA HERNANDEZ PATRICIA DEL PILAR", status: "Activo", nivel: "Experto", adherencia: 105.51, ahtRaw: "07:32", pctMal: 25.00, pctTCI: 7.69, pctEnvio: 27.68, detractores: 35, neutros: 9, promotores: 72, score1: 62.07, score2: 63.79, score3: 59.09 },
-        { id: "1076033", name: "TERRONES CAMPOS RICARDO GABRIEL", status: "Activo", nivel: "Experto", adherencia: 48.60, ahtRaw: "09:00", pctMal: 0, pctTCI: 0.00, pctEnvio: 33.04, detractores: 5, neutros: 2, promotores: 31, score1: 81.58, score2: 89.47, score3: 88.89 },
-        { id: "1076031", name: "RUIZ CCANCEC GABRIEL MARIANO", status: "Activo", nivel: "Experto", adherencia: 96.93, ahtRaw: "08:13", pctMal: 0, pctTCI: null, pctEnvio: 42.18, detractores: 83, neutros: 10, promotores: 38, score1: 29.01, score2: 29.23, score3: 27.34 },
-        { id: "1076030", name: "ROSALES RUBIO RICARDO FELIX", status: "Activo", nivel: "Experto", adherencia: 89.32, ahtRaw: "12:13", pctMal: 100.00, pctTCI: 0.00, pctEnvio: 32.89, detractores: 11, neutros: 4, promotores: 56, score1: 78.87, score2: 77.46, score3: 66.20 },
-        { id: "1076029", name: "ENCARNACION POICÓN KATHERINE MARIA", status: "Activo", nivel: "Experto", adherencia: 97.54, ahtRaw: "04:28", pctMal: 4.00, pctTCI: 0.00, pctEnvio: 26.22, detractores: 99, neutros: 8, promotores: 41, score1: 27.70, score2: 29.73, score3: 25.69 },
-        { id: "1076028", name: "JARATA VEGA EDDIE", status: "Activo", nivel: "Experto", adherencia: 99.71, ahtRaw: "07:18", pctMal: 25.00, pctTCI: 0.00, pctEnvio: 34.99, detractores: 31, neutros: 7, promotores: 83, score1: 68.60, score2: 79.51, score3: 70.34 },
-        { id: "1089865", name: "TARAZONA LEVANO JORGE ALEXANDER", status: "Activo", nivel: "Inter", adherencia: 102.73, ahtRaw: "07:23", pctMal: 100.00, pctTCI: 25.00, pctEnvio: 33.03, detractores: 18, neutros: 6, promotores: 117, score1: 82.98, score2: 95.74, score3: 87.50 },
-        { id: "1076026", name: "PRIMO PARDO JORGE ELIAS", status: "Activo", nivel: "Experto", adherencia: 70.81, ahtRaw: "10:53", pctMal: 0.00, pctTCI: null, pctEnvio: 16.38, detractores: 21, neutros: 4, promotores: 76, score1: 75.25, score2: 83.50, score3: 78.35 },
-        { id: "1076025", name: "GOMEZ GARCIA STEFANO ADONIS", status: "Activo", nivel: "Experto", adherencia: null, ahtRaw: "--:--", pctMal: null, pctTCI: null, pctEnvio: null, detractores: 6, neutros: 0, promotores: 13, score1: 68.42, score2: 73.68, score3: 68.42 },
-        { id: "1076024", name: "puta", status: "Activo", nivel: "Experto", adherencia: 88.00, ahtRaw: "06:59", pctMal: 0.00, pctTCI: 0.00, pctEnvio: 33.13, detractores: 17, neutros: 6, promotores: 82, score1: 78.10, score2: 85.71, score3: 76.70 },
-        { id: "1076023", name: "AMANQUI CHAVEZ RIVALDO JULIO", status: "Activo", nivel: "Experto", adherencia: 101.96, ahtRaw: "09:47", pctMal: 0.00, pctTCI: 0.00, pctEnvio: 33.23, detractores: 10, neutros: 3, promotores: 95, score1: 87.96, score2: 93.46, score3: 91.35 },
-        { id: "1076022", name: "GARCIA MOLINA CARLOS DANIEL", status: "Activo", nivel: "Experto", adherencia: 99.13, ahtRaw: "06:31", pctMal: 0.00, pctTCI: 0.00, pctEnvio: 20.32, detractores: 12, neutros: 0, promotores: 76, score1: 86.36, score2: 93.18, score3: 89.53 },
-        { id: "1076021", name: "CANO MOSCOSO EFRAIN ALEXANDER", status: "Activo", nivel: "Experto", adherencia: 99.15, ahtRaw: "08:57", pctMal: 20.00, pctTCI: 0.00, pctEnvio: 20.34, detractores: 14, neutros: 3, promotores: 51, score1: 75.00, score2: 82.61, score3: 77.94 }
-    ];
-// Meta objetivos (basados en imagen: Adherencia 95%, AHT 08:45, %Mal <8%, TCI<7%, Envio 30%)
-    const GOALS = {
-        adherence: 95,         // %
-        ahtSeconds: 8*60+45,   // 525 segundos
-        mal: 8,               // %
-        tci: 7,              // %
-        envio: 30            // %
-    };
-
-    // Helper convertir AHT string "mm:ss" a segundos
-    function ahtToSeconds(ahtStr) {
-        if (!ahtStr || ahtStr === "--:--") return Infinity;
-        let parts = ahtStr.split(":");
-        if (parts.length === 2) return parseInt(parts[0])*60 + parseInt(parts[1]);
-        return 9999;
+    function drawPot() {
+      ctx.fillStyle = "#8B4513";
+      ctx.fillRect(200, 350, 100, 40);
     }
 
-    // formatear segundos a mm:ss
-    function secondsToTime(sec) {
-        if (!isFinite(sec)) return "--:--";
-        let mins = Math.floor(sec/60);
-        let secs = sec % 60;
-        return `${mins.toString().padStart(2,'0')}:${secs.toString().padStart(2,'0')}`;
+    function drawPlant() {
+      ctx.fillStyle = "green";
+      ctx.fillRect(245, 350 - plantHeight, 10, plantHeight);
+      ctx.beginPath();
+      ctx.arc(250, 350 - plantHeight, 15, 0, Math.PI * 2);
+      ctx.fill();
     }
 
-    let currentAgent = null;
-    let donutChart = null;
-
-    function updateDashboard(agentId) {
-        const agent = employeesData.find(emp => emp.id === agentId);
-        if (!agent) return;
-        currentAgent = agent;
-
-        // Actualizar KPIs superiores
-        const adherenceVal = agent.adherencia !== null ? agent.adherencia : 0;
-        const ahtSec = ahtToSeconds(agent.ahtRaw);
-        const malVal = agent.pctMal !== null ? agent.pctMal : 0;
-        const tciVal = (agent.pctTCI !== null && agent.pctTCI !== undefined) ? agent.pctTCI : 0;
-        const envioVal = agent.pctEnvio !== null ? agent.pctEnvio : 0;
-
-        const nps = agent.promotores - agent.detractores;
-        const totalEncuestas = agent.promotores + agent.neutros + agent.detractores;
-        const npsScoreRaw = totalEncuestas > 0 ? ((agent.promotores - agent.detractores) / totalEncuestas) * 100 : 0;
-
-        document.getElementById("kpiContainer").innerHTML = `
-            <div class="kpi-card"><div class="kpi-title"><i class="fas fa-calendar-check"></i> Adherencia</div><div class="kpi-value">${adherenceVal.toFixed(1)}%</div><div class="kpi-sub">Meta: 95%</div></div>
-            <div class="kpi-card"><div class="kpi-title"><i class="fas fa-hourglass-half"></i> AHT</div><div class="kpi-value">${agent.ahtRaw}</div><div class="kpi-sub">Objetivo: 08:45</div></div>
-            <div class="kpi-card"><div class="kpi-title"><i class="fas fa-times-circle"></i> % Error</div><div class="kpi-value">${malVal !== null ? malVal.toFixed(1)+'%' : 'N/A'}</div><div class="kpi-sub">Meta <8%</div></div>
-            <div class="kpi-card"><div class="kpi-title"><i class="fas fa-phone-alt"></i> % TCI</div><div class="kpi-value">${tciVal !== null ? tciVal.toFixed(1)+'%' : '0%'}</div><div class="kpi-sub">Obj <7%</div></div>
-            <div class="kpi-card"><div class="kpi-title"><i class="fas fa-paper-plane"></i> % Envío</div><div class="kpi-value">${envioVal.toFixed(1)}%</div><div class="kpi-sub">Meta 30%</div></div>
-        `;
-
-        // progreso adherence
-        const adhFillPercent = Math.min(100, (adherenceVal / GOALS.adherence) * 100);
-        document.getElementById("adhFill").style.width = `${Math.min(100, adhFillPercent)}%`;
-        document.getElementById("adhPercentLabel").innerHTML = `${adherenceVal.toFixed(1)}%`;
-        // AHT comparativa (menor es mejor)
-        const ahtRatio = GOALS.ahtSeconds / ahtSec;
-        const ahtFillPct = Math.min(100, ahtRatio * 100);
-        document.getElementById("ahtFill").style.width = `${ahtFillPct}%`;
-        document.getElementById("ahtStatusLabel").innerHTML = `${agent.ahtRaw} (${ahtSec <= GOALS.ahtSeconds ? "✓ cumple" : "↑ excede"})`;
-        // Mal
-        let malFill = malVal !== null ? Math.min(100, (GOALS.mal / (malVal+0.01)) * 100) : 0;
-        if (malVal === 0) malFill = 100;
-        document.getElementById("malFill").style.width = `${Math.min(100, malFill)}%`;
-        document.getElementById("malLabel").innerHTML = `${malVal !== null ? malVal.toFixed(1)+'%' : 'N/A'} / <8%`;
-        // TCI
-        let tciFill = (tciVal !== null && tciVal>0) ? Math.min(100, (GOALS.tci / tciVal)*100) : 100;
-        if (tciVal === 0) tciFill = 100;
-        document.getElementById("tciFill").style.width = `${tciFill}%`;
-        document.getElementById("tciLabel").innerHTML = `${tciVal !== null ? tciVal.toFixed(1)+'%' : '0%'} / <7%`;
-        // Envío
-        let envFill = Math.min(100, (envioVal / GOALS.envio) * 100);
-        document.getElementById("envioFill").style.width = `${envFill}%`;
-        document.getElementById("envioLabel").innerHTML = `${envioVal.toFixed(1)}% / 30%`;
-
-        // scores de calidad (3 valores)
-        document.getElementById("score1Val").innerHTML = `${agent.score1 !== undefined ? agent.score1.toFixed(1)+'%' : '--'}`;
-        document.getElementById("score2Val").innerHTML = `${agent.score2 !== undefined ? agent.score2.toFixed(1)+'%' : '--'}`;
-        document.getElementById("score3Val").innerHTML = `${agent.score3 !== undefined ? agent.score3.toFixed(1)+'%' : '--'}`;
-        document.getElementById("ahtDetail").innerHTML = `${agent.ahtRaw} (${ahtSec} seg)`;
-        document.getElementById("promotersCount").innerHTML = agent.promotores;
-        document.getElementById("detractorsCount").innerHTML = agent.detractores;
-        document.getElementById("neutralCount").innerHTML = agent.neutros;
-        const npsRounded = npsScoreRaw.toFixed(1);
-        document.getElementById("npsCalculated").innerHTML = `${npsRounded} (${nps > 0 ? 'Positivo' : nps < 0 ? 'Negativo' : 'Neutro'})`;
-        document.getElementById("npsScoreDisplay").innerHTML = `<span class="goal-badge" style="background:#e6f4ea;">NPS Score: ${npsRounded}</span> &nbsp; Promotores: ${agent.promotores} | Detractores: ${agent.detractores}`;
-
-        // Actualizar donut chart
-        if (donutChart) donutChart.destroy();
-        const ctx = document.getElementById('npsDonutChart').getContext('2d');
-        donutChart = new Chart(ctx, {
-            type: 'doughnut',
-            data: {
-                labels: ['Promotores', 'Neutrales', 'Detractores'],
-                datasets: [{
-                    data: [agent.promotores, agent.neutros, agent.detractores],
-                    backgroundColor: ['#2b9348', '#f4a261', '#e76f51'],
-                    borderWidth: 0,
-                    hoverOffset: 6,
-                }]
-            },
-            options: {
-                responsive: true, maintainAspectRatio: true, cutout: '60%',
-                plugins: { legend: { position: 'bottom', labels: { font: { size: 11 } } } }
-            }
-        });
+    function drawWateringCan() {
+      ctx.fillStyle = "#0f3460";
+      ctx.fillRect(100, 100, 60, 30);
+      ctx.fillRect(160, 110, 30, 10);
+      // agua
+      ctx.fillStyle = "lightblue";
+      for (let i = 0; i < 5; i++) {
+        ctx.beginPath();
+        ctx.arc(190 + i*10, 140 + i*10, 5, 0, Math.PI*2);
+        ctx.fill();
+      }
     }
 
-    function populateSelect() {
-        const select = document.getElementById("agentSelect");
-        select.innerHTML = "";
-        employeesData.forEach(emp => {
-            const option = document.createElement("option");
-            option.value = emp.id;
-            option.textContent = `${emp.id} - ${emp.name.substring(0, 42)}`;
-            select.appendChild(option);
-        });
-        select.addEventListener("change", (e) => {
-            updateDashboard(e.target.value);
-        });
-        if(employeesData.length) updateDashboard(employeesData[0].id);
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      drawPot();
+      drawPlant();
+      if (watering) {
+        drawWateringCan();
+      }
     }
 
-    populateSelect();
-</script>
+    canvas.addEventListener('click', () => {
+      watering = true;
+      plantHeight += 10; // crece la planta
+      draw();
+      setTimeout(() => {
+        watering = false;
+        draw();
+      }, 800); // regadera desaparece después de 0.8s
+    });
+
+    draw();
+  </script>
 </body>
 </html>
