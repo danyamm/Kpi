@@ -1,81 +1,711 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Minijuego Planta</title>
-  <style>
-    body {
-      margin: 0;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: #1a1a2e;
-      font-family: sans-serif;
-    }
-    #game {
-      background: #16213e;
-      border: 3px solid #0f3460;
-      border-radius: 12px;
-      cursor: pointer;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Derivación de Encuesta — Guía para Asesores</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --verde: #00C853;
+    --azul: #1565C0;
+    --azul-claro: #42A5F5;
+    --negro: #0A0A12;
+    --blanco: #FAFAFA;
+    --gris: #E8EBF0;
+    --amarillo: #FFD600;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--negro);
+    color: var(--blanco);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    min-height: 100vh;
+    padding: 60px 24px 80px;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 70% 60% at 20% 40%, rgba(0,200,83,.18) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 50% at 80% 60%, rgba(21,101,192,.22) 0%, transparent 60%);
+  }
+
+  .badge {
+    display: inline-block;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--verde);
+    border: 1px solid rgba(0,200,83,.4);
+    border-radius: 999px;
+    padding: 6px 18px;
+    margin-bottom: 32px;
+    position: relative;
+    animation: fadeUp .6s ease both;
+  }
+
+  .hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(52px, 10vw, 96px);
+    font-weight: 800;
+    line-height: .95;
+    letter-spacing: -3px;
+    position: relative;
+    animation: fadeUp .7s ease both;
+  }
+
+  .hero h1 .verde { color: var(--verde); }
+  .hero h1 .azul  { color: var(--azul-claro); }
+
+  .hero-sub {
+    font-size: clamp(15px, 2.5vw, 18px);
+    font-weight: 300;
+    color: rgba(255,255,255,.55);
+    max-width: 520px;
+    line-height: 1.6;
+    margin-top: 24px;
+    position: relative;
+    animation: fadeUp .8s ease both;
+  }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 36px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    color: rgba(255,255,255,.3);
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    animation: bounce 2s infinite;
+  }
+  .scroll-hint svg { opacity: .4; }
+
+  /* ── SECCIÓN BASE ── */
+  section {
+    padding: 80px 24px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--verde);
+    margin-bottom: 12px;
+    font-weight: 500;
+  }
+
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(30px, 5vw, 48px);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -1.5px;
+    margin-bottom: 48px;
+  }
+
+  /* ── FLUJO (TIMELINE) ── */
+  .flow {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .step {
+    display: grid;
+    grid-template-columns: 56px 1fr;
+    gap: 24px;
+    position: relative;
+    padding-bottom: 40px;
+    opacity: 0;
+    transform: translateX(-20px);
+    transition: opacity .5s ease, transform .5s ease;
+  }
+  .step.visible { opacity: 1; transform: translateX(0); }
+
+  .step-num-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .step-num {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+
+  .step-line {
+    width: 2px;
+    flex: 1;
+    background: linear-gradient(to bottom, rgba(255,255,255,.12), transparent);
+    margin-top: 8px;
+  }
+
+  .step:last-child .step-line { display: none; }
+
+  .step-content {
+    background: rgba(255,255,255,.04);
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 16px;
+    padding: 24px 28px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .step-content::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    border-radius: 16px 16px 0 0;
+  }
+
+  .step.verde .step-num { background: rgba(0,200,83,.15); color: var(--verde); border: 1.5px solid rgba(0,200,83,.3); }
+  .step.verde .step-content::before { background: var(--verde); }
+
+  .step.azul .step-num { background: rgba(66,165,245,.15); color: var(--azul-claro); border: 1.5px solid rgba(66,165,245,.3); }
+  .step.azul .step-content::before { background: var(--azul-claro); }
+
+  .step.amarillo .step-num { background: rgba(255,214,0,.12); color: var(--amarillo); border: 1.5px solid rgba(255,214,0,.3); }
+  .step.amarillo .step-content::before { background: var(--amarillo); }
+
+  .step-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 20px;
+    font-weight: 800;
+    margin-bottom: 8px;
+    letter-spacing: -.5px;
+  }
+
+  .step-desc {
+    font-size: 14px;
+    color: rgba(255,255,255,.6);
+    line-height: 1.7;
+    margin-bottom: 0;
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 16px;
+  }
+
+  .tag {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: .5px;
+    padding: 4px 12px;
+    border-radius: 999px;
+    text-transform: uppercase;
+  }
+  .tag-v { background: rgba(0,200,83,.15); color: var(--verde); }
+  .tag-a { background: rgba(66,165,245,.15); color: var(--azul-claro); }
+  .tag-y { background: rgba(255,214,0,.12); color: var(--amarillo); }
+
+  /* ── SCRIPT CARD ── */
+  .script-card {
+    background: linear-gradient(135deg, rgba(0,200,83,.08) 0%, rgba(21,101,192,.10) 100%);
+    border: 1px solid rgba(0,200,83,.2);
+    border-radius: 20px;
+    padding: 36px 40px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .script-card::before {
+    content: '"';
+    font-family: 'Syne', sans-serif;
+    font-size: 180px;
+    color: rgba(0,200,83,.08);
+    position: absolute;
+    top: -40px;
+    left: 10px;
+    line-height: 1;
+    pointer-events: none;
+  }
+
+  .script-label {
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--verde);
+    font-weight: 500;
+    margin-bottom: 20px;
+  }
+
+  .script-text {
+    font-size: 17px;
+    line-height: 1.8;
+    color: rgba(255,255,255,.85);
+    position: relative;
+  }
+
+  .script-text mark {
+    background: none;
+    color: var(--verde);
+    font-weight: 500;
+  }
+
+  .script-text .azul-mark {
+    color: var(--azul-claro);
+    font-weight: 500;
+  }
+
+  /* ── DO / DON'T ── */
+  .dos-donts {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  @media (max-width: 600px) {
+    .dos-donts { grid-template-columns: 1fr; }
+  }
+
+  .do-card, .dont-card {
+    border-radius: 16px;
+    padding: 28px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity .5s ease, transform .5s ease;
+  }
+  .do-card.visible, .dont-card.visible { opacity: 1; transform: translateY(0); }
+
+  .do-card {
+    background: rgba(0,200,83,.07);
+    border: 1px solid rgba(0,200,83,.2);
+  }
+
+  .dont-card {
+    background: rgba(239,68,68,.06);
+    border: 1px solid rgba(239,68,68,.2);
+  }
+
+  .card-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 18px;
+  }
+
+  .card-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+
+  .do-card .card-icon { background: rgba(0,200,83,.2); }
+  .dont-card .card-icon { background: rgba(239,68,68,.2); }
+
+  .card-head-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 16px;
+  }
+
+  .do-card .card-head-title { color: var(--verde); }
+  .dont-card .card-head-title { color: #EF4444; }
+
+  .card-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .card-list li {
+    font-size: 13.5px;
+    color: rgba(255,255,255,.7);
+    line-height: 1.5;
+    padding-left: 18px;
+    position: relative;
+  }
+
+  .card-list li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    font-size: 10px;
+  }
+
+  .do-card .card-list li::before { color: var(--verde); }
+  .dont-card .card-list li::before { color: #EF4444; }
+
+  /* ── STAT PILLS ── */
+  .stats-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 40px;
+  }
+
+  .stat-pill {
+    background: rgba(255,255,255,.05);
+    border: 1px solid rgba(255,255,255,.1);
+    border-radius: 12px;
+    padding: 20px 28px;
+    flex: 1;
+    min-width: 140px;
+    text-align: center;
+  }
+
+  .stat-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 38px;
+    font-weight: 800;
+    display: block;
+  }
+
+  .stat-desc {
+    font-size: 12px;
+    color: rgba(255,255,255,.45);
+    margin-top: 4px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  /* ── CHECKLIST FINAL ── */
+  .checklist {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 32px;
+  }
+
+  .check-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 16px 20px;
+    background: rgba(255,255,255,.04);
+    border: 1px solid rgba(255,255,255,.07);
+    border-radius: 12px;
+    opacity: 0;
+    transform: translateX(20px);
+    transition: opacity .4s ease, transform .4s ease;
+  }
+  .check-item.visible { opacity: 1; transform: translateX(0); }
+
+  .check-box {
+    width: 24px;
+    height: 24px;
+    border-radius: 6px;
+    border: 1.5px solid var(--verde);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1px;
+    color: var(--verde);
+    font-size: 13px;
+  }
+
+  .check-text {
+    font-size: 14px;
+    color: rgba(255,255,255,.75);
+    line-height: 1.55;
+  }
+
+  .check-text strong {
+    color: var(--blanco);
+    font-weight: 500;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    text-align: center;
+    padding: 60px 24px;
+    border-top: 1px solid rgba(255,255,255,.07);
+    color: rgba(255,255,255,.25);
+    font-size: 12px;
+    letter-spacing: 1px;
+  }
+
+  /* ── DIVIDER ── */
+  .divider {
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,.1), transparent);
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes bounce {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50%       { transform: translateX(-50%) translateY(8px); }
+  }
+</style>
 </head>
 <body>
-  <canvas id="game" width="500" height="400"></canvas>
-  <script>
-    const canvas = document.getElementById('game');
-    const ctx = canvas.getContext('2d');
 
-    let plantHeight = 20;
-    let watering = false;
+<!-- ═══════════════════  HERO  ═══════════════════ -->
+<div class="hero">
+  <div class="badge">Guía para Asesores · Atención al Cliente</div>
+  <h1>
+    Cómo lograr que<br>
+    el cliente <span class="verde">sí conteste</span><br>
+    la <span class="azul">encuesta</span>
+  </h1>
+  <p class="hero-sub">
+    Una correcta derivación en los últimos segundos de la llamada marca la diferencia entre un cliente que responde y uno que cuelga.
+  </p>
+  <div class="scroll-hint">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+    desplázate
+  </div>
+</div>
 
-    function drawPot() {
-      ctx.fillStyle = "#8B4513";
-      ctx.fillRect(200, 350, 100, 40);
-    }
+<div class="divider"></div>
 
-    function drawPlant() {
-      ctx.fillStyle = "green";
-      ctx.fillRect(245, 350 - plantHeight, 10, plantHeight);
-      ctx.beginPath();
-      ctx.arc(250, 350 - plantHeight, 15, 0, Math.PI * 2);
-      ctx.fill();
-    }
+<!-- ═══════════════════  SECCIÓN 1: FLUJO  ═══════════════════ -->
+<section>
+  <p class="section-label">Paso a paso</p>
+  <h2 class="section-title">El flujo de la<br>última parte de atención</h2>
 
-    function drawWateringCan() {
-      ctx.fillStyle = "#0f3460";
-      ctx.fillRect(100, 100, 60, 30);
-      ctx.fillRect(160, 110, 30, 10);
-      // agua
-      ctx.fillStyle = "lightblue";
-      for (let i = 0; i < 5; i++) {
-        ctx.beginPath();
-        ctx.arc(190 + i*10, 140 + i*10, 5, 0, Math.PI*2);
-        ctx.fill();
+  <div class="flow">
+
+    <!-- PASO 1 -->
+    <div class="step verde">
+      <div class="step-num-col">
+        <div class="step-num">1</div>
+        <div class="step-line"></div>
+      </div>
+      <div class="step-content">
+        <div class="step-title">Cierra la atención con calidez</div>
+        <p class="step-desc">
+          Antes de mencionar la encuesta, asegúrate de que el cliente sienta que su caso fue resuelto.
+          Un cierre cálido predispone al cliente a escuchar y colaborar.
+        </p>
+        <div class="tags">
+          <span class="tag tag-v">Tono amable</span>
+          <span class="tag tag-v">Empático</span>
+          <span class="tag tag-v">Proactivo</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- PASO 2 -->
+    <div class="step azul">
+      <div class="step-num-col">
+        <div class="step-num">2</div>
+        <div class="step-line"></div>
+      </div>
+      <div class="step-content">
+        <div class="step-title">Informa sobre la encuesta</div>
+        <p class="step-desc">
+          Cuéntale al cliente que recibirá una breve encuesta. Explica que es corta, que sirve para mejorar
+          el servicio y que su opinión es valiosa. <strong>No la presentes como un trámite.</strong>
+        </p>
+        <div class="tags">
+          <span class="tag tag-a">Transparencia</span>
+          <span class="tag tag-a">Brevedad</span>
+          <span class="tag tag-a">Propósito claro</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- PASO 3 -->
+    <div class="step amarillo">
+      <div class="step-num-col">
+        <div class="step-num">3</div>
+        <div class="step-line"></div>
+      </div>
+      <div class="step-content">
+        <div class="step-title">Solicita la participación — sin cortar</div>
+        <p class="step-desc">
+          Pide explícitamente que conteste. <strong>No cuelgues tú primero.</strong> Espera a que el
+          cliente sea transferido a la encuesta antes de finalizar la llamada.
+          Cortar antes de la transferencia es la causa #1 de encuestas perdidas.
+        </p>
+        <div class="tags">
+          <span class="tag tag-y">No cortar</span>
+          <span class="tag tag-y">Esperar transferencia</span>
+          <span class="tag tag-y">Solicitar activamente</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- PASO 4 -->
+    <div class="step verde">
+      <div class="step-num-col">
+        <div class="step-num">4</div>
+        <div class="step-line"></div>
+      </div>
+      <div class="step-content">
+        <div class="step-title">Deriva a la encuesta</div>
+        <p class="step-desc">
+          Ejecuta la derivación correctamente en el sistema y confirma que el cliente fue transferido.
+          Solo entonces finaliza tu gestión.
+        </p>
+        <div class="tags">
+          <span class="tag tag-v">Derivar</span>
+          <span class="tag tag-v">Confirmar transferencia</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════  SECCIÓN 2: SCRIPT  ═══════════════════ -->
+<section>
+  <p class="section-label">Guión sugerido</p>
+  <h2 class="section-title">Cómo decirlo<br>con tus palabras</h2>
+
+  <div class="script-card">
+    <div class="script-label">Ejemplo de cierre + derivación</div>
+    <p class="script-text">
+      "Con gusto, <mark>¿hay algo más en lo que pueda ayudarte el día de hoy?</mark>
+      [esperar respuesta]<br><br>
+      Perfecto. Antes de finalizar,
+      <mark>recibirás una breve encuesta de solo unos segundos</mark>
+      sobre la atención de hoy — tu opinión nos ayuda a seguir mejorando.
+      <span class="azul-mark">¿Puedo transferirte para que la contestes?</span>
+      <br><br>
+      ¡Que tengas excelente día!&nbsp;[transferir y esperar conexión]"
+    </p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════  SECCIÓN 3: DO / DON'T  ═══════════════════ -->
+<section>
+  <p class="section-label">Buenas prácticas</p>
+  <h2 class="section-title">Qué hacer<br>y qué evitar</h2>
+
+  <div class="dos-donts">
+    <div class="do-card">
+      <div class="card-head">
+        <div class="card-icon">✓</div>
+        <span class="card-head-title">SÍ hacer</span>
+      </div>
+      <ul class="card-list">
+        <li>Avisar que la encuesta es <strong>muy breve</strong></li>
+        <li>Pedir la participación de forma <strong>directa y amable</strong></li>
+        <li>Esperar a que el cliente sea <strong>efectivamente transferido</strong></li>
+        <li>Usar un tono <strong>empático y proactivo</strong> al cerrar</li>
+        <li>Confirmar que <strong>se resolvió</strong> la solicitud antes de despedirte</li>
+        <li>Transmitir que la encuesta <strong>sirve para mejorar</strong> el servicio</li>
+      </ul>
+    </div>
+    <div class="dont-card">
+      <div class="card-head">
+        <div class="card-icon">✕</div>
+        <span class="card-head-title">NO hacer</span>
+      </div>
+      <ul class="card-list">
+        <li>Cortar la llamada <strong>antes</strong> de la transferencia</li>
+        <li>Mencionar la encuesta de forma <strong>apresurada o de último momento</strong></li>
+        <li>Sonar <strong>obligado o mecánico</strong> al pedirla</li>
+        <li>Decir "le va a llegar una encuesta" y <strong>colgar de inmediato</strong></li>
+        <li>Pedir la encuesta si el cliente <strong>quedó molesto</strong> sin escucharlo</li>
+        <li>Omitir la derivación por considerar que <strong>"no va a contestar"</strong></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════  SECCIÓN 4: CHECKLIST  ═══════════════════ -->
+<section>
+  <p class="section-label">Checklist rápido</p>
+  <h2 class="section-title">Antes de cerrar<br>cada llamada</h2>
+
+  <div class="checklist">
+    <div class="check-item">
+      <div class="check-box">✓</div>
+      <p class="check-text"><strong>¿Resolví la solicitud del cliente?</strong> El cliente debe sentir que fue atendido antes de escuchar sobre la encuesta.</p>
+    </div>
+    <div class="check-item">
+      <div class="check-box">✓</div>
+      <p class="check-text"><strong>¿Pregunté si necesita algo más?</strong> Siempre ofrecer una última oportunidad antes del cierre.</p>
+    </div>
+    <div class="check-item">
+      <div class="check-box">✓</div>
+      <p class="check-text"><strong>¿Informé sobre la encuesta?</strong> Mencionar que es breve y que sirve para mejorar el servicio.</p>
+    </div>
+    <div class="check-item">
+      <div class="check-box">✓</div>
+      <p class="check-text"><strong>¿Pedí su participación activamente?</strong> No asumir; solicitar de forma directa y amable.</p>
+    </div>
+    <div class="check-item">
+      <div class="check-box">✓</div>
+      <p class="check-text"><strong>¿Esperé la transferencia antes de colgar?</strong> Este es el paso más crítico. No cortar antes.</p>
+    </div>
+    <div class="check-item">
+      <div class="check-box">✓</div>
+      <p class="check-text"><strong>¿Registré la derivación en el sistema?</strong> Confirmar que la gestión quedó correctamente documentada.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  Guía interna de asesores · Derivación de encuesta · Atención al Cliente
+</footer>
+
+<script>
+  // Intersection Observer para animar al hacer scroll
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 80);
+        observer.unobserve(entry.target);
       }
-    }
-
-    function draw() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      drawPot();
-      drawPlant();
-      if (watering) {
-        drawWateringCan();
-      }
-    }
-
-    canvas.addEventListener('click', () => {
-      watering = true;
-      plantHeight += 10; // crece la planta
-      draw();
-      setTimeout(() => {
-        watering = false;
-        draw();
-      }, 800); // regadera desaparece después de 0.8s
     });
+  }, { threshold: 0.1 });
 
-    draw();
-  </script>
+  document.querySelectorAll('.step, .do-card, .dont-card, .check-item')
+    .forEach(el => observer.observe(el));
+</script>
 </body>
 </html>
