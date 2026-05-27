@@ -1,711 +1,416 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Derivación de Encuesta — Guía para Asesores</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --verde: #00C853;
-    --azul: #1565C0;
-    --azul-claro: #42A5F5;
-    --negro: #0A0A12;
-    --blanco: #FAFAFA;
-    --gris: #E8EBF0;
-    --amarillo: #FFD600;
-  }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Desarrollo Personal | Presentación</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #e0f2fe 0%, #cffafe 100%);
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
 
-  body {
-    font-family: 'DM Sans', sans-serif;
-    background: var(--negro);
-    color: var(--blanco);
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
+        /* Contenedor principal de la presentación */
+        .presentation-container {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
 
-  /* ── HERO ── */
-  .hero {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    min-height: 100vh;
-    padding: 60px 24px 80px;
-    overflow: hidden;
-  }
+        .slide {
+            width: 85%;
+            max-width: 1100px;
+            height: 80%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(2px);
+            border-radius: 2rem;
+            box-shadow: 0 25px 45px rgba(0,0,0,0.2), 0 0 0 1px rgba(255,255,255,0.5);
+            padding: 2rem 3rem;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s ease;
+            overflow-y: auto;
+            scrollbar-width: thin;
+        }
 
-  .hero::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background:
-      radial-gradient(ellipse 70% 60% at 20% 40%, rgba(0,200,83,.18) 0%, transparent 60%),
-      radial-gradient(ellipse 60% 50% at 80% 60%, rgba(21,101,192,.22) 0%, transparent 60%);
-  }
+        /* Ocultar scrollbar pero mantener funcionalidad (opcional) */
+        .slide::-webkit-scrollbar {
+            width: 6px;
+        }
+        .slide::-webkit-scrollbar-track {
+            background: #e2e8f0;
+            border-radius: 10px;
+        }
+        .slide::-webkit-scrollbar-thumb {
+            background: #94a3b8;
+            border-radius: 10px;
+        }
 
-  .badge {
-    display: inline-block;
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 500;
-    font-size: 11px;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: var(--verde);
-    border: 1px solid rgba(0,200,83,.4);
-    border-radius: 999px;
-    padding: 6px 18px;
-    margin-bottom: 32px;
-    position: relative;
-    animation: fadeUp .6s ease both;
-  }
+        h1 {
+            font-size: 3rem;
+            background: linear-gradient(135deg, #0f2b3d, #1e6f5c);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 1rem;
+            font-weight: 800;
+        }
 
-  .hero h1 {
-    font-family: 'Syne', sans-serif;
-    font-size: clamp(52px, 10vw, 96px);
-    font-weight: 800;
-    line-height: .95;
-    letter-spacing: -3px;
-    position: relative;
-    animation: fadeUp .7s ease both;
-  }
+        h2 {
+            font-size: 2rem;
+            color: #0f2b3d;
+            border-left: 6px solid #2c7da0;
+            padding-left: 1rem;
+            margin: 1.5rem 0 1rem 0;
+            font-weight: 600;
+        }
 
-  .hero h1 .verde { color: var(--verde); }
-  .hero h1 .azul  { color: var(--azul-claro); }
+        h3 {
+            font-size: 1.5rem;
+            color: #1e6f5c;
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
+        }
 
-  .hero-sub {
-    font-size: clamp(15px, 2.5vw, 18px);
-    font-weight: 300;
-    color: rgba(255,255,255,.55);
-    max-width: 520px;
-    line-height: 1.6;
-    margin-top: 24px;
-    position: relative;
-    animation: fadeUp .8s ease both;
-  }
+        .subtitle {
+            font-size: 1.2rem;
+            color: #2c3e50;
+            margin-top: -0.5rem;
+            margin-bottom: 2rem;
+        }
 
-  .scroll-hint {
-    position: absolute;
-    bottom: 36px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-    color: rgba(255,255,255,.3);
-    font-size: 11px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    animation: bounce 2s infinite;
-  }
-  .scroll-hint svg { opacity: .4; }
+        .grid-2col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 1rem 0;
+        }
 
-  /* ── SECCIÓN BASE ── */
-  section {
-    padding: 80px 24px;
-    max-width: 900px;
-    margin: 0 auto;
-  }
+        .card {
+            background: #f8fafc;
+            border-radius: 1.5rem;
+            padding: 1.2rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border: 1px solid #e2e8f0;
+        }
 
-  .section-label {
-    font-size: 11px;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: var(--verde);
-    margin-bottom: 12px;
-    font-weight: 500;
-  }
+        .badge {
+            background: #d9f0ec;
+            color: #115e59;
+            border-radius: 40px;
+            padding: 0.2rem 0.8rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
 
-  .section-title {
-    font-family: 'Syne', sans-serif;
-    font-size: clamp(30px, 5vw, 48px);
-    font-weight: 800;
-    line-height: 1.05;
-    letter-spacing: -1.5px;
-    margin-bottom: 48px;
-  }
+        .principios {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            margin: 1rem 0;
+        }
 
-  /* ── FLUJO (TIMELINE) ── */
-  .flow {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-  }
+        .principio-item {
+            background: white;
+            border-radius: 60px;
+            padding: 0.5rem 1.2rem;
+            border: 1px solid #cbd5e1;
+            font-weight: 500;
+            color: #1e293b;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
 
-  .step {
-    display: grid;
-    grid-template-columns: 56px 1fr;
-    gap: 24px;
-    position: relative;
-    padding-bottom: 40px;
-    opacity: 0;
-    transform: translateX(-20px);
-    transition: opacity .5s ease, transform .5s ease;
-  }
-  .step.visible { opacity: 1; transform: translateX(0); }
+        .icon-text {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            margin: 0.8rem 0;
+        }
 
-  .step-num-col {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
+        .icon-text i {
+            width: 2rem;
+            font-size: 1.6rem;
+            color: #2c7da0;
+        }
 
-  .step-num {
-    width: 56px;
-    height: 56px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: 'Syne', sans-serif;
-    font-weight: 800;
-    font-size: 20px;
-    flex-shrink: 0;
-  }
+        .johari {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            background: #f1f5f9;
+            border-radius: 1.2rem;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
 
-  .step-line {
-    width: 2px;
-    flex: 1;
-    background: linear-gradient(to bottom, rgba(255,255,255,.12), transparent);
-    margin-top: 8px;
-  }
+        .johari-cuadrante {
+            background: white;
+            border-radius: 1rem;
+            padding: 0.8rem;
+            font-size: 0.9rem;
+            border-top: 4px solid;
+        }
 
-  .step:last-child .step-line { display: none; }
+        .fija-crecimiento {
+            display: flex;
+            gap: 1.5rem;
+            margin: 1rem 0;
+        }
+        .mentalidad {
+            flex: 1;
+            border-radius: 1.2rem;
+            padding: 1rem;
+            background: #fff;
+            box-shadow: 0 6px 14px rgba(0,0,0,0.05);
+        }
 
-  .step-content {
-    background: rgba(255,255,255,.04);
-    border: 1px solid rgba(255,255,255,.08);
-    border-radius: 16px;
-    padding: 24px 28px;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .step-content::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 3px;
-    border-radius: 16px 16px 0 0;
-  }
-
-  .step.verde .step-num { background: rgba(0,200,83,.15); color: var(--verde); border: 1.5px solid rgba(0,200,83,.3); }
-  .step.verde .step-content::before { background: var(--verde); }
-
-  .step.azul .step-num { background: rgba(66,165,245,.15); color: var(--azul-claro); border: 1.5px solid rgba(66,165,245,.3); }
-  .step.azul .step-content::before { background: var(--azul-claro); }
-
-  .step.amarillo .step-num { background: rgba(255,214,0,.12); color: var(--amarillo); border: 1.5px solid rgba(255,214,0,.3); }
-  .step.amarillo .step-content::before { background: var(--amarillo); }
-
-  .step-title {
-    font-family: 'Syne', sans-serif;
-    font-size: 20px;
-    font-weight: 800;
-    margin-bottom: 8px;
-    letter-spacing: -.5px;
-  }
-
-  .step-desc {
-    font-size: 14px;
-    color: rgba(255,255,255,.6);
-    line-height: 1.7;
-    margin-bottom: 0;
-  }
-
-  .tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-top: 16px;
-  }
-
-  .tag {
-    font-size: 11px;
-    font-weight: 500;
-    letter-spacing: .5px;
-    padding: 4px 12px;
-    border-radius: 999px;
-    text-transform: uppercase;
-  }
-  .tag-v { background: rgba(0,200,83,.15); color: var(--verde); }
-  .tag-a { background: rgba(66,165,245,.15); color: var(--azul-claro); }
-  .tag-y { background: rgba(255,214,0,.12); color: var(--amarillo); }
-
-  /* ── SCRIPT CARD ── */
-  .script-card {
-    background: linear-gradient(135deg, rgba(0,200,83,.08) 0%, rgba(21,101,192,.10) 100%);
-    border: 1px solid rgba(0,200,83,.2);
-    border-radius: 20px;
-    padding: 36px 40px;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .script-card::before {
-    content: '"';
-    font-family: 'Syne', sans-serif;
-    font-size: 180px;
-    color: rgba(0,200,83,.08);
-    position: absolute;
-    top: -40px;
-    left: 10px;
-    line-height: 1;
-    pointer-events: none;
-  }
-
-  .script-label {
-    font-size: 11px;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: var(--verde);
-    font-weight: 500;
-    margin-bottom: 20px;
-  }
-
-  .script-text {
-    font-size: 17px;
-    line-height: 1.8;
-    color: rgba(255,255,255,.85);
-    position: relative;
-  }
-
-  .script-text mark {
-    background: none;
-    color: var(--verde);
-    font-weight: 500;
-  }
-
-  .script-text .azul-mark {
-    color: var(--azul-claro);
-    font-weight: 500;
-  }
-
-  /* ── DO / DON'T ── */
-  .dos-donts {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-  }
-
-  @media (max-width: 600px) {
-    .dos-donts { grid-template-columns: 1fr; }
-  }
-
-  .do-card, .dont-card {
-    border-radius: 16px;
-    padding: 28px;
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity .5s ease, transform .5s ease;
-  }
-  .do-card.visible, .dont-card.visible { opacity: 1; transform: translateY(0); }
-
-  .do-card {
-    background: rgba(0,200,83,.07);
-    border: 1px solid rgba(0,200,83,.2);
-  }
-
-  .dont-card {
-    background: rgba(239,68,68,.06);
-    border: 1px solid rgba(239,68,68,.2);
-  }
-
-  .card-head {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 18px;
-  }
-
-  .card-icon {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 16px;
-    flex-shrink: 0;
-  }
-
-  .do-card .card-icon { background: rgba(0,200,83,.2); }
-  .dont-card .card-icon { background: rgba(239,68,68,.2); }
-
-  .card-head-title {
-    font-family: 'Syne', sans-serif;
-    font-weight: 800;
-    font-size: 16px;
-  }
-
-  .do-card .card-head-title { color: var(--verde); }
-  .dont-card .card-head-title { color: #EF4444; }
-
-  .card-list {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .card-list li {
-    font-size: 13.5px;
-    color: rgba(255,255,255,.7);
-    line-height: 1.5;
-    padding-left: 18px;
-    position: relative;
-  }
-
-  .card-list li::before {
-    content: '▸';
-    position: absolute;
-    left: 0;
-    font-size: 10px;
-  }
-
-  .do-card .card-list li::before { color: var(--verde); }
-  .dont-card .card-list li::before { color: #EF4444; }
-
-  /* ── STAT PILLS ── */
-  .stats-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 16px;
-    margin-bottom: 40px;
-  }
-
-  .stat-pill {
-    background: rgba(255,255,255,.05);
-    border: 1px solid rgba(255,255,255,.1);
-    border-radius: 12px;
-    padding: 20px 28px;
-    flex: 1;
-    min-width: 140px;
-    text-align: center;
-  }
-
-  .stat-num {
-    font-family: 'Syne', sans-serif;
-    font-size: 38px;
-    font-weight: 800;
-    display: block;
-  }
-
-  .stat-desc {
-    font-size: 12px;
-    color: rgba(255,255,255,.45);
-    margin-top: 4px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-  }
-
-  /* ── CHECKLIST FINAL ── */
-  .checklist {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    margin-top: 32px;
-  }
-
-  .check-item {
-    display: flex;
-    align-items: flex-start;
-    gap: 14px;
-    padding: 16px 20px;
-    background: rgba(255,255,255,.04);
-    border: 1px solid rgba(255,255,255,.07);
-    border-radius: 12px;
-    opacity: 0;
-    transform: translateX(20px);
-    transition: opacity .4s ease, transform .4s ease;
-  }
-  .check-item.visible { opacity: 1; transform: translateX(0); }
-
-  .check-box {
-    width: 24px;
-    height: 24px;
-    border-radius: 6px;
-    border: 1.5px solid var(--verde);
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: 1px;
-    color: var(--verde);
-    font-size: 13px;
-  }
-
-  .check-text {
-    font-size: 14px;
-    color: rgba(255,255,255,.75);
-    line-height: 1.55;
-  }
-
-  .check-text strong {
-    color: var(--blanco);
-    font-weight: 500;
-  }
-
-  /* ── FOOTER ── */
-  footer {
-    text-align: center;
-    padding: 60px 24px;
-    border-top: 1px solid rgba(255,255,255,.07);
-    color: rgba(255,255,255,.25);
-    font-size: 12px;
-    letter-spacing: 1px;
-  }
-
-  /* ── DIVIDER ── */
-  .divider {
-    width: 100%;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,.1), transparent);
-    max-width: 900px;
-    margin: 0 auto;
-  }
-
-  /* ── ANIMATIONS ── */
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(24px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-
-  @keyframes bounce {
-    0%, 100% { transform: translateX(-50%) translateY(0); }
-    50%       { transform: translateX(-50%) translateY(8px); }
-  }
-</style>
+        .footer-nav {
+            position: fixed;
+            bottom: 20px;
+            right: 30px;
+            display: flex;
+            gap: 1rem;
+            z-index: 100;
+        }
+        .nav-btn {
+            background: white;
+            border: none;
+            font-size: 1.8rem;
+            width: 50px;
+            height: 50px;
+            border-radius: 60px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            transition: 0.2s;
+            color: #1e6f5c;
+        }
+        .nav-btn:hover {
+            background: #1e6f5c;
+            color: white;
+            transform: scale(1.05);
+        }
+        .slide-counter {
+            position: fixed;
+            bottom: 25px;
+            left: 30px;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(4px);
+            color: white;
+            padding: 0.3rem 1rem;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        @media (max-width: 700px) {
+            .slide { padding: 1.2rem; width: 92%; height: 85%; }
+            h1 { font-size: 2rem; }
+            h2 { font-size: 1.5rem; }
+            .grid-2col { grid-template-columns: 1fr; gap: 1rem; }
+            .fija-crecimiento { flex-direction: column; }
+        }
+        ul, .lista-bonita {
+            list-style: none;
+            margin: 1rem 0;
+        }
+        .lista-bonita li {
+            margin: 0.6rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+        }
+        .lista-bonita li i {
+            width: 1.6rem;
+            color: #2c7da0;
+        }
+        hr {
+            margin: 1rem 0;
+            border: 0;
+            height: 1px;
+            background: linear-gradient(to right, #cbd5e1, transparent);
+        }
+    </style>
 </head>
 <body>
 
-<!-- ═══════════════════  HERO  ═══════════════════ -->
-<div class="hero">
-  <div class="badge">Guía para Asesores · Atención al Cliente</div>
-  <h1>
-    Cómo lograr que<br>
-    el cliente <span class="verde">sí conteste</span><br>
-    la <span class="azul">encuesta</span>
-  </h1>
-  <p class="hero-sub">
-    Una correcta derivación en los últimos segundos de la llamada marca la diferencia entre un cliente que responde y uno que cuelga.
-  </p>
-  <div class="scroll-hint">
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
-    desplázate
-  </div>
+<div class="presentation-container">
+    <div class="slide" id="slideContainer">
+        <!-- El contenido se inyecta dinámicamente con JS -->
+    </div>
+    <div class="footer-nav">
+        <button class="nav-btn" id="prevBtn"><i class="fas fa-chevron-left"></i></button>
+        <button class="nav-btn" id="nextBtn"><i class="fas fa-chevron-right"></i></button>
+    </div>
+    <div class="slide-counter" id="slideCounter">Diapositiva 1 / 13</div>
 </div>
 
-<div class="divider"></div>
-
-<!-- ═══════════════════  SECCIÓN 1: FLUJO  ═══════════════════ -->
-<section>
-  <p class="section-label">Paso a paso</p>
-  <h2 class="section-title">El flujo de la<br>última parte de atención</h2>
-
-  <div class="flow">
-
-    <!-- PASO 1 -->
-    <div class="step verde">
-      <div class="step-num-col">
-        <div class="step-num">1</div>
-        <div class="step-line"></div>
-      </div>
-      <div class="step-content">
-        <div class="step-title">Cierra la atención con calidez</div>
-        <p class="step-desc">
-          Antes de mencionar la encuesta, asegúrate de que el cliente sienta que su caso fue resuelto.
-          Un cierre cálido predispone al cliente a escuchar y colaborar.
-        </p>
-        <div class="tags">
-          <span class="tag tag-v">Tono amable</span>
-          <span class="tag tag-v">Empático</span>
-          <span class="tag tag-v">Proactivo</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- PASO 2 -->
-    <div class="step azul">
-      <div class="step-num-col">
-        <div class="step-num">2</div>
-        <div class="step-line"></div>
-      </div>
-      <div class="step-content">
-        <div class="step-title">Informa sobre la encuesta</div>
-        <p class="step-desc">
-          Cuéntale al cliente que recibirá una breve encuesta. Explica que es corta, que sirve para mejorar
-          el servicio y que su opinión es valiosa. <strong>No la presentes como un trámite.</strong>
-        </p>
-        <div class="tags">
-          <span class="tag tag-a">Transparencia</span>
-          <span class="tag tag-a">Brevedad</span>
-          <span class="tag tag-a">Propósito claro</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- PASO 3 -->
-    <div class="step amarillo">
-      <div class="step-num-col">
-        <div class="step-num">3</div>
-        <div class="step-line"></div>
-      </div>
-      <div class="step-content">
-        <div class="step-title">Solicita la participación — sin cortar</div>
-        <p class="step-desc">
-          Pide explícitamente que conteste. <strong>No cuelgues tú primero.</strong> Espera a que el
-          cliente sea transferido a la encuesta antes de finalizar la llamada.
-          Cortar antes de la transferencia es la causa #1 de encuestas perdidas.
-        </p>
-        <div class="tags">
-          <span class="tag tag-y">No cortar</span>
-          <span class="tag tag-y">Esperar transferencia</span>
-          <span class="tag tag-y">Solicitar activamente</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- PASO 4 -->
-    <div class="step verde">
-      <div class="step-num-col">
-        <div class="step-num">4</div>
-        <div class="step-line"></div>
-      </div>
-      <div class="step-content">
-        <div class="step-title">Deriva a la encuesta</div>
-        <p class="step-desc">
-          Ejecuta la derivación correctamente en el sistema y confirma que el cliente fue transferido.
-          Solo entonces finaliza tu gestión.
-        </p>
-        <div class="tags">
-          <span class="tag tag-v">Derivar</span>
-          <span class="tag tag-v">Confirmar transferencia</span>
-        </div>
-      </div>
-    </div>
-
-  </div>
-</section>
-
-<div class="divider"></div>
-
-<!-- ═══════════════════  SECCIÓN 2: SCRIPT  ═══════════════════ -->
-<section>
-  <p class="section-label">Guión sugerido</p>
-  <h2 class="section-title">Cómo decirlo<br>con tus palabras</h2>
-
-  <div class="script-card">
-    <div class="script-label">Ejemplo de cierre + derivación</div>
-    <p class="script-text">
-      "Con gusto, <mark>¿hay algo más en lo que pueda ayudarte el día de hoy?</mark>
-      [esperar respuesta]<br><br>
-      Perfecto. Antes de finalizar,
-      <mark>recibirás una breve encuesta de solo unos segundos</mark>
-      sobre la atención de hoy — tu opinión nos ayuda a seguir mejorando.
-      <span class="azul-mark">¿Puedo transferirte para que la contestes?</span>
-      <br><br>
-      ¡Que tengas excelente día!&nbsp;[transferir y esperar conexión]"
-    </p>
-  </div>
-</section>
-
-<div class="divider"></div>
-
-<!-- ═══════════════════  SECCIÓN 3: DO / DON'T  ═══════════════════ -->
-<section>
-  <p class="section-label">Buenas prácticas</p>
-  <h2 class="section-title">Qué hacer<br>y qué evitar</h2>
-
-  <div class="dos-donts">
-    <div class="do-card">
-      <div class="card-head">
-        <div class="card-icon">✓</div>
-        <span class="card-head-title">SÍ hacer</span>
-      </div>
-      <ul class="card-list">
-        <li>Avisar que la encuesta es <strong>muy breve</strong></li>
-        <li>Pedir la participación de forma <strong>directa y amable</strong></li>
-        <li>Esperar a que el cliente sea <strong>efectivamente transferido</strong></li>
-        <li>Usar un tono <strong>empático y proactivo</strong> al cerrar</li>
-        <li>Confirmar que <strong>se resolvió</strong> la solicitud antes de despedirte</li>
-        <li>Transmitir que la encuesta <strong>sirve para mejorar</strong> el servicio</li>
-      </ul>
-    </div>
-    <div class="dont-card">
-      <div class="card-head">
-        <div class="card-icon">✕</div>
-        <span class="card-head-title">NO hacer</span>
-      </div>
-      <ul class="card-list">
-        <li>Cortar la llamada <strong>antes</strong> de la transferencia</li>
-        <li>Mencionar la encuesta de forma <strong>apresurada o de último momento</strong></li>
-        <li>Sonar <strong>obligado o mecánico</strong> al pedirla</li>
-        <li>Decir "le va a llegar una encuesta" y <strong>colgar de inmediato</strong></li>
-        <li>Pedir la encuesta si el cliente <strong>quedó molesto</strong> sin escucharlo</li>
-        <li>Omitir la derivación por considerar que <strong>"no va a contestar"</strong></li>
-      </ul>
-    </div>
-  </div>
-</section>
-
-<div class="divider"></div>
-
-<!-- ═══════════════════  SECCIÓN 4: CHECKLIST  ═══════════════════ -->
-<section>
-  <p class="section-label">Checklist rápido</p>
-  <h2 class="section-title">Antes de cerrar<br>cada llamada</h2>
-
-  <div class="checklist">
-    <div class="check-item">
-      <div class="check-box">✓</div>
-      <p class="check-text"><strong>¿Resolví la solicitud del cliente?</strong> El cliente debe sentir que fue atendido antes de escuchar sobre la encuesta.</p>
-    </div>
-    <div class="check-item">
-      <div class="check-box">✓</div>
-      <p class="check-text"><strong>¿Pregunté si necesita algo más?</strong> Siempre ofrecer una última oportunidad antes del cierre.</p>
-    </div>
-    <div class="check-item">
-      <div class="check-box">✓</div>
-      <p class="check-text"><strong>¿Informé sobre la encuesta?</strong> Mencionar que es breve y que sirve para mejorar el servicio.</p>
-    </div>
-    <div class="check-item">
-      <div class="check-box">✓</div>
-      <p class="check-text"><strong>¿Pedí su participación activamente?</strong> No asumir; solicitar de forma directa y amable.</p>
-    </div>
-    <div class="check-item">
-      <div class="check-box">✓</div>
-      <p class="check-text"><strong>¿Esperé la transferencia antes de colgar?</strong> Este es el paso más crítico. No cortar antes.</p>
-    </div>
-    <div class="check-item">
-      <div class="check-box">✓</div>
-      <p class="check-text"><strong>¿Registré la derivación en el sistema?</strong> Confirmar que la gestión quedó correctamente documentada.</p>
-    </div>
-  </div>
-</section>
-
-<footer>
-  Guía interna de asesores · Derivación de encuesta · Atención al Cliente
-</footer>
-
 <script>
-  // Intersection Observer para animar al hacer scroll
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry, i) => {
-      if (entry.isIntersecting) {
-        setTimeout(() => entry.target.classList.add('visible'), i * 80);
-        observer.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.1 });
+    // ======================= CONTENIDO DE LAS DIAPOSITIVAS (GRUPOS 1,2,3) ==================
+    const slidesData = [
+        // Portada (grupo 0)
+        `<div style="display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; height: 100%;">
+            <i class="fas fa-seedling" style="font-size: 4rem; color: #2c7da0; margin-bottom: 1rem;"></i>
+            <h1 style="font-size: 3.2rem;">✨ Conecta contigo mismo</h1>
+            <p style="font-size: 1.5rem; font-weight: 300;">Descubre tus fortalezas y valores personales</p>
+            <hr style="width: 80px; margin: 1.5rem auto;">
+            <p style="font-size: 1rem; color: #2c3e50;">Desarrollo personal · Inteligencia emocional · Mentalidad de crecimiento</p>
+        </div>`,
 
-  document.querySelectorAll('.step, .do-card, .dont-card, .check-item')
-    .forEach(el => observer.observe(el));
+        // Grupo 1 (imágenes 1,2,3) - diapo 2: Desarrollo personal
+        `<div>
+            <h2>🌱 Desarrollo personal</h2>
+            <p><strong>Proceso continuo de autoevaluación</strong> que implica aplicar nuevas habilidades y mejorar las existentes.</p>
+            <div class="grid-2col">
+                <div class="card"><i class="fas fa-heart" style="font-size:1.8rem; color:#e11d48;"></i><h3>Beneficios</h3><ul class="lista-bonita"><li><i class="fas fa-check-circle"></i>Mejora autoestima y confianza</li><li><i class="fas fa-users"></i>Mejora relaciones</li><li><i class="fas fa-shield-alt"></i>Mayor resiliencia</li></ul></div>
+                <div class="card"><i class="fas fa-chart-line"></i><h3>Áreas</h3><div class="principios"><span class="badge">Emocional</span><span class="badge">Profesional</span><span class="badge">Psicológica</span><span class="badge">Social</span></div></div>
+            </div>
+        </div>`,
+
+        // Diapo 3: Principios fundamentales
+        `<div>
+            <h2>📌 Principios del crecimiento personal</h2>
+            <div class="principios">
+                <span class="principio-item">Continuidad</span><span class="principio-item">Disposición al aprendizaje</span><span class="principio-item">Individualidad</span>
+                <span class="principio-item">Potencial interno</span><span class="principio-item">Visión positiva y tolerante</span><span class="principio-item">Trascendencia</span>
+            </div>
+            <div class="card" style="margin-top:1.5rem;"><i class="fas fa-chart-simple"></i> <strong>Impacto transformador:</strong> Mejora del autoconocimiento, aumento del rendimiento y mejor calidad de vida.</div>
+        </div>`,
+
+        // Diapo 4: Competencias personales y sociales
+        `<div>
+            <h2>🧠 Competencias personales</h2>
+            <div class="grid-2col">
+                <div class="card"><i class="fas fa-user-astronaut"></i><h3>Personales</h3><ul><li>Motivación</li><li>Toma de decisiones</li><li>Empatía</li><li>Habilidades sociales</li></ul></div>
+                <div class="card"><i class="fas fa-people-arrows"></i><h3>Sociales</h3><ul><li>Liderazgo</li><li>Comunicación efectiva</li><li>Empatía y trabajo en equipo</li><li>Negociación</li></ul><p><strong>Importancia:</strong> personal, profesional, salud mental, éxito académico.</p></div>
+            </div>
+        </div>`,
+
+        // Diapo 5: Autoconocimiento y fases
+        `<div>
+            <h2>🔍 Autoconocimiento</h2>
+            <p>Capacidad de comprenderse a uno mismo como persona única.</p>
+            <div class="card"><h3>Fases del autoconocimiento</h3>
+                <div style="display:flex; flex-wrap:wrap; gap:0.5rem; margin-top:0.5rem;">
+                    <span class="badge">1. Autoconocimiento</span><span class="badge">2. Autoconcepto</span><span class="badge">3. Autoevaluación</span>
+                    <span class="badge">4. Autoaceptación</span><span class="badge">5. Autorespeto</span><span class="badge">6. Autoestima</span>
+                </div>
+            </div>
+        </div>`,
+
+        // Grupo 2 (imágenes 4,5) - diapo 6: Inteligencia emocional y modelos
+        `<div>
+            <h2>🧠 Inteligencia emocional</h2>
+            <div class="grid-2col">
+                <div class="card"><i class="fas fa-brain"></i><h3>Modelo Mayer-Salovey</h3><p>Capacidad de percibir, comprender, utilizar y gestionar emociones.</p></div>
+                <div class="card"><i class="fas fa-chalkboard-user"></i><h3>Modelo mixto (Goleman)</h3><p>Autoconciencia · Autorregulación · Motivación · Empatía · Habilidades sociales</p></div>
+            </div>
+            <div class="icon-text"><i class="fas fa-eye"></i><span><strong>Conciencia emocional:</strong> reconocer emociones propias, valoración y confianza.</span></div>
+        </div>`,
+
+        // Diapo 7: Ventana de Johari + herramientas
+        `<div>
+            <h2>🪟 Ventana de Johari</h2>
+            <div class="johari">
+                <div class="johari-cuadrante" style="border-top-color:#1e6f5c;"><strong>Área pública</strong><br>Yo conozco / otros conocen</div>
+                <div class="johari-cuadrante" style="border-top-color:#e67e22;"><strong>Zona ciega</strong><br>Yo ignoro / otros ven</div>
+                <div class="johari-cuadrante" style="border-top-color:#2c7da0;"><strong>Zona oculta</strong><br>Yo conozco / otros ignoran</div>
+                <div class="johari-cuadrante" style="border-top-color:#95a5a6;"><strong>Zona desconocida</strong><br>Ni yo ni otros conocen</div>
+            </div>
+            <h3>Herramientas de autoevaluación</h3>
+            <div class="principios"><span class="badge">Evaluación 360°</span><span class="badge">Coaching</span><span class="badge">Diario personal</span><span class="badge">FODA personal</span><span class="badge">Test de personalidad</span></div>
+        </div>`,
+
+        // Diapo 8: Mentalidad fija vs crecimiento (Grupo 3, inicio)
+        `<div>
+            <h2>🧠 Mentalidad fija vs Crecimiento (Carol Dweck)</h2>
+            <div class="fija-crecimiento">
+                <div class="mentalidad"><i class="fas fa-lock" style="font-size:2rem; color:#9ca3af;"></i><h3>Mentalidad fija</h3><p>Cree que la inteligencia y habilidades son fijas e inmutables. El talento natural lo es todo.</p></div>
+                <div class="mentalidad"><i class="fas fa-seedling" style="font-size:2rem; color:#10b981;"></i><h3>Mentalidad de crecimiento</h3><p>Cree que se puede ganar conocimiento y habilidad. Los obstáculos son oportunidades.</p></div>
+            </div>
+        </div>`,
+
+        // Diapo 9: Impacto en el aprendizaje
+        `<div>
+            <h2>📚 Impacto en el aprendizaje</h2>
+            <div class="grid-2col">
+                <div class="card"><i class="fas fa-times-circle"></i><h3>Mentalidad fija</h3><p>El estudio solo mide lo que ya saben. Aceptan la derrota fácilmente.</p></div>
+                <div class="card"><i class="fas fa-chart-line"></i><h3>Mentalidad de crecimiento</h3><p>Ven el estudio como ampliar conocimientos. El fracaso es una oportunidad para aprender.</p></div>
+            </div>
+        </div>`,
+
+        // Diapo 10: Estrategias para fomentar mentalidad de crecimiento + FODA
+        `<div>
+            <h2>🚀 Estrategias para mentalidad de crecimiento</h2>
+            <ul class="lista-bonita">
+                <li><i class="fas fa-star"></i> Reconocer y valorar el esfuerzo</li>
+                <li><i class="fas fa-chart-simple"></i> Concentrarse en el progreso</li>
+                <li><i class="fas fa-lightbulb"></i> Fomentar el fracaso como aprendizaje</li>
+                <li><i class="fas fa-smile"></i> Celebrar el aprendizaje y analizar errores</li>
+            </ul>
+            <div class="card"><i class="fas fa-chalkboard"></i> <strong>FODA personal</strong> → Fortalezas, Debilidades, Oportunidades, Amenazas.<br>
+            <strong>Reconocer valores personales:</strong> actúan como escudo protector contra pensamientos negativos.</div>
+        </div>`,
+
+        // Diapo 11: Cierre final
+        `<div style="display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; height: 100%;">
+            <i class="fas fa-hand-sparkles" style="font-size: 3.5rem; color: #1e6f5c; margin-bottom: 1rem;"></i>
+            <h2>Tu crecimiento empieza hoy</h2>
+            <p style="font-size: 1.2rem; max-width: 80%;">"El crecimiento personal no es un destino, es un viaje continuo de autodescubrimiento y mejora."</p>
+            <hr style="width: 100px; margin: 1.5rem auto;">
+            <p>✨ Conócete, acepta retos y desarrolla tu mejor versión ✨</p>
+        </div>`
+    ];
+
+    let currentSlide = 0;
+    const slideContainer = document.getElementById('slideContainer');
+    const counterSpan = document.getElementById('slideCounter');
+
+    function renderSlide() {
+        slideContainer.innerHTML = slidesData[currentSlide];
+        counterSpan.innerText = `Diapositiva ${currentSlide+1} / ${slidesData.length}`;
+        // Scroll al inicio de cada diapositiva (por si tiene scroll)
+        slideContainer.scrollTop = 0;
+    }
+
+    function nextSlide() {
+        if (currentSlide < slidesData.length - 1) {
+            currentSlide++;
+            renderSlide();
+        }
+    }
+    function prevSlide() {
+        if (currentSlide > 0) {
+            currentSlide--;
+            renderSlide();
+        }
+    }
+
+    document.getElementById('nextBtn').addEventListener('click', nextSlide);
+    document.getElementById('prevBtn').addEventListener('click', prevSlide);
+    window.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight') nextSlide();
+        if (e.key === 'ArrowLeft') prevSlide();
+    });
+
+    renderSlide();
 </script>
 </body>
 </html>
